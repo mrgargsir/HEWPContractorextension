@@ -1,37 +1,63 @@
-name: Build Extension
+name: Chrome Extension Builder
 
 on:
   push:
     branches: [ main ]
-    paths: [ 'src/**' ]
+    paths: 
+      - 'src/**'      # Only trigger when src/ files change
+      - '.github/workflows/release.yml'  # Also trigger if workflow changes
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      # 1. Checkout code
+      - uses: actions/checkout@v4
 
-    - name: Install Chrome
-      run: sudo apt-get install -y google-chrome-stable
+      # 2. Install Chrome (required for CRX packaging)
+      - name: Install Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
 
-    - name: Make ZIP
-      run: |
-        cd src
-        zip -r ../extension.zip *
-        mv ../extension.zip extension-v${{ github.run_number }}.zip
+      # 3. Create ZIP package (unpacked extension)
+      - name: Create ZIP
+        run: |
+          cd src
+          zip -r ../extension_${{ github.run_number }}.zip *
+          echo "ZIP created: extension_${{ github.run_number }}.zip"
 
-    - name: Make CRX
-      env:
-        PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}
-      run: |
-        echo "$PRIVATE_KEY" > key.pem
-        google-chrome --pack-extension=src --pack-extension-key=key.pem --no-sandbox
-        mv src.crx extension-v${{ github.run_number }}.crx
-        rm key.pem
+      # 4. Create signed CRX (using your secret key)
+      - name: Create CRX
+        env:
+          PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}  # From GitHub Secrets
+        run: |
+          echo "$PRIVATE_KEY" > private-key.pem
+          google-chrome \
+            --pack-extension=src \
+            --pack-extension-key=private-key.pem \
+            --no-sandbox --disable-gpu
+          mv src.crx extension_${{ github.run_number }}.crx
+          rm private-key.pem  # Delete immediately after use
+          echo "CRX created: extension_${{ github.run_number }}.crx"
 
-    - name: Upload Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          extension-v${{ github.run_number }}.zip
-          extension-v${{ github.run_number }}.crx
+      # 5. Upload artifacts (available for 90 days)
+      - name: Upload Packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension-packages
+          path: |
+            extension_${{ github.run_number }}.zip
+            extension_${{ github.run_number }}.crx
+
+      # 6. Create GitHub Release (optional)
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: success()  # Only run if previous steps succeeded
+        with:
+          tag_name: "v${{ github.run_number }}"
+          name: "Version ${{ github.run_number }}"
+          body: "Auto-generated release"
+          files: |
+            extension_${{ github.run_number }}.zip
+            extension_${{ github.run_number }}.crx
