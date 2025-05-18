@@ -33,12 +33,6 @@ jobs:
           google-chrome --pack-extension=src --pack-extension-key=key.pem --no-sandbox
           mv src.crx extension_${{ github.sha }}.crx
           rm key.pem
-
-- name: Debug File Existence
-  run: |
-    ls -la
-    ls -la extension_${{ github.sha }}.*
-
     
       # 5. Upload Artifacts (with proper retention)
       - name: Upload Build Artifacts
