@@ -34,6 +34,12 @@ jobs:
           mv src.crx extension_${{ github.sha }}.crx
           rm key.pem
 
+- name: Debug File Existence
+  run: |
+    ls -la
+    ls -la extension_${{ github.sha }}.*
+
+    
       # 5. Upload Artifacts (with proper retention)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
