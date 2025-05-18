@@ -1,11 +1,9 @@
-name: Chrome Extension Builder
+name: Chrome Extension Packager
 
 on:
   push:
     branches: [ main ]
-    paths: 
-      - 'src/**'      # Only trigger when src/ files change
-      - '.github/workflows/release.yml'  # Also trigger if workflow changes
+    paths: [ 'src/**' ]
 
 jobs:
   build:
@@ -14,50 +12,45 @@ jobs:
       # 1. Checkout code
       - uses: actions/checkout@v4
 
-      # 2. Install Chrome (required for CRX packaging)
+      # 2. Install Chrome
       - name: Install Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # 3. Create ZIP package (unpacked extension)
-      - name: Create ZIP
+      # 3. Create ZIP
+      - name: Package ZIP
         run: |
           cd src
-          zip -r ../extension_${{ github.run_number }}.zip *
-          echo "ZIP created: extension_${{ github.run_number }}.zip"
-
-      # 4. Create signed CRX (using your secret key)
-      - name: Create CRX
+          zip -r ../extension_${{ github.sha }}.zip *
+          
+      # 4. Create CRX
+      - name: Package CRX
         env:
-          PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}  # From GitHub Secrets
+          PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}
         run: |
-          echo "$PRIVATE_KEY" > private-key.pem
-          google-chrome \
-            --pack-extension=src \
-            --pack-extension-key=private-key.pem \
-            --no-sandbox --disable-gpu
-          mv src.crx extension_${{ github.run_number }}.crx
-          rm private-key.pem  # Delete immediately after use
-          echo "CRX created: extension_${{ github.run_number }}.crx"
+          echo "$PRIVATE_KEY" > key.pem
+          google-chrome --pack-extension=src --pack-extension-key=key.pem --no-sandbox
+          mv src.crx extension_${{ github.sha }}.crx
+          rm key.pem
 
-      # 5. Upload artifacts (available for 90 days)
-      - name: Upload Packages
+      # 5. Upload Artifacts (with proper retention)
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: extension-packages
+          name: extension-build
           path: |
-            extension_${{ github.run_number }}.zip
-            extension_${{ github.run_number }}.crx
+            extension_${{ github.sha }}.zip
+            extension_${{ github.sha }}.crx
+          retention-days: 7  # Automatically deletes after 1 week
 
-      # 6. Create GitHub Release (optional)
-      - name: Create Release
+      # 6. Create Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        if: success()  # Only run if previous steps succeeded
         with:
-          tag_name: "v${{ github.run_number }}"
-          name: "Version ${{ github.run_number }}"
-          body: "Auto-generated release"
+          tag_name: v${{ github.sha }}
+          name: "Extension v${{ github.sha }}"
+          body: "Automatically built extension packages"
           files: |
-            extension_${{ github.run_number }}.zip
-            extension_${{ github.run_number }}.crx
+            extension_${{ github.sha }}.zip
+            extension_${{ github.sha }}.crx
