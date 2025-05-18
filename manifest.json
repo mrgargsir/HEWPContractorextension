@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "MRGARGSIR Tools",
+  "version": "1.5",
+  "description": "Adds utility bookmarks for HEWP workflow automation",
+  "permissions": [
+    "bookmarks"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
