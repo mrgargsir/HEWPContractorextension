@@ -12,45 +12,67 @@ jobs:
       # 1. Checkout code
       - uses: actions/checkout@v4
 
-      # 2. Install Chrome
-      - name: Install Chrome
+      # 2. Install Chromium-based Browsers
+      - name: Install Chromium-based Browsers
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo apt-get install -y wget gnupg software-properties-common
+
+          # Google Chrome
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-          
-      # Verify Chrome installation
-      - name: Verify Chrome
-        run: google-chrome --version
 
-      # 3. Create ZIP
+          # Chromium (fallback)
+          sudo apt-get install -y chromium-browser
+
+      # 3. Verify Installed Browsers
+      - name: Verify Browser Installations
+        run: |
+          google-chrome --version || true
+          chromium-browser --version || true
+
+      # 4. Create ZIP Package
       - name: Package ZIP
         run: |
           cd src
           zip -r ../extension_${{ github.sha }}.zip *
           cd ..
-          ls -la  # Verify zip was created
+          ls -la
 
-      # 4. Create CRX
+      # 5. Create CRX Package
       - name: Package CRX
         env:
           PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}
         run: |
           if [ -z "$PRIVATE_KEY" ]; then
             echo "Warning: No private key found, skipping CRX creation"
-            touch extension_${{ github.sha }}.crx  # Create empty file to prevent workflow failure
+            touch extension_${{ github.sha }}.crx
           else
             echo "$PRIVATE_KEY" > key.pem
-            google-chrome --pack-extension=./src --pack-extension-key=key.pem --no-sandbox
+
+            # Determine which browser CLI is available
+            if command -v google-chrome > /dev/null; then
+              BROWSER_CLI="google-chrome"
+            elif command -v chromium-browser > /dev/null; then
+              BROWSER_CLI="chromium-browser"
+            elif command -v microsoft-edge > /dev/null; then
+              BROWSER_CLI="microsoft-edge"
+            else
+              echo "❌ No Chromium-based browser with --pack-extension found"
+              exit 1
+            fi
+
+            echo "Using $BROWSER_CLI to create CRX"
+            "$BROWSER_CLI" --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
+
             mv src.crx extension_${{ github.sha }}.crx
             rm key.pem
           fi
-          ls -la  # Verify crx was created
+          ls -la
 
-      # 5. Upload Artifacts (with proper retention)
+      # 6. Upload Artifacts
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -61,10 +83,10 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
 
-      # 6. Create Release
+      # 7. Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        if: success() || failure()  # Run even if previous steps failed
+        if: success() || failure()
         with:
           tag_name: v${{ github.sha }}
           name: "Extension v${{ github.sha }}"
