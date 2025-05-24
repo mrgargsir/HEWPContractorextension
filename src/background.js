@@ -17,7 +17,7 @@ chrome.runtime.onInstalled.addListener(() => {
   ];
 
   
-
+ 
  chrome.bookmarks.getChildren("1", (existingBookmarks) => {
     const titlesToRemove = bookmarksToAdd.map(b => b.title);
 
