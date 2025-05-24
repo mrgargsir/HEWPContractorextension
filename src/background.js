@@ -1,5 +1,6 @@
 chrome.runtime.onInstalled.addListener(() => {
   const bookmarksToAdd = [
+    { title: "MRGARGSIR", url: "https://github.com/mrgargsir" },
     { title: "💡 HEWP", url: "https://works.haryana.gov.in/HEWP_Login/login.aspx" },
     { title: "👤 Login", url: "javascript:(function(){const wait=ms=>new Promise(r=>setTimeout(r,ms));(async function(){document.getElementById('alogin')?.click();await wait(500);document.getElementById('contractorbtn')?.click();await wait(300);const captcha=document.getElementById('txtCaptcha');if(captcha){captcha.scrollIntoView({behavior:'smooth',block:'center'});captcha.focus();captcha.style.border='2px solid red';setTimeout(()=>captcha.style.border='',1500);}})();})();" },
     
