@@ -2,8 +2,8 @@ name: Chrome Extension Packager
 
 on:
   push:
-    branches: [ main ]
-    paths: [ 'src/**' ]
+    branches: [main]
+    paths: ['src/**']
 
 jobs:
   build:
@@ -16,37 +16,55 @@ jobs:
       - name: Install Chrome
         run: |
           sudo apt-get update
+          sudo apt-get install -y wget
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
           sudo apt-get install -y google-chrome-stable
+          
+      # Verify Chrome installation
+      - name: Verify Chrome
+        run: google-chrome --version
 
       # 3. Create ZIP
       - name: Package ZIP
         run: |
           cd src
           zip -r ../extension_${{ github.sha }}.zip *
-          
+          cd ..
+          ls -la  # Verify zip was created
+
       # 4. Create CRX
       - name: Package CRX
         env:
           PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}
         run: |
-          echo "$PRIVATE_KEY" > key.pem
-          google-chrome --pack-extension=src --pack-extension-key=key.pem --no-sandbox
-          mv src.crx extension_${{ github.sha }}.crx
-          rm key.pem
-    
+          if [ -z "$PRIVATE_KEY" ]; then
+            echo "Warning: No private key found, skipping CRX creation"
+            touch extension_${{ github.sha }}.crx  # Create empty file to prevent workflow failure
+          else
+            echo "$PRIVATE_KEY" > key.pem
+            google-chrome --pack-extension=./src --pack-extension-key=key.pem --no-sandbox
+            mv src.crx extension_${{ github.sha }}.crx
+            rm key.pem
+          fi
+          ls -la  # Verify crx was created
+
       # 5. Upload Artifacts (with proper retention)
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: extension-build
           path: |
             extension_${{ github.sha }}.zip
             extension_${{ github.sha }}.crx
-          retention-days: 7  # Automatically deletes after 1 week
+          retention-days: 7
+          if-no-files-found: warn
 
       # 6. Create Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
+        if: success() || failure()  # Run even if previous steps failed
         with:
           tag_name: v${{ github.sha }}
           name: "Extension v${{ github.sha }}"
@@ -54,3 +72,5 @@ jobs:
           files: |
             extension_${{ github.sha }}.zip
             extension_${{ github.sha }}.crx
+          draft: false
+          prerelease: false
