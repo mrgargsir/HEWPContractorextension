@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "MRGARGSIR Tools",
-  "version": "1.7",
+  "version": "1.61",
   "description": "Adds utility bookmarks for HEWP workflow automation",
   "permissions": [
     "bookmarks"
