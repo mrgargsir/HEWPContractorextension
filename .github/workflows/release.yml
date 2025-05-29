@@ -3,8 +3,7 @@ name: Chrome Extension Packager
 on:
   push:
     branches: [main]
-    paths: 
-  - 'src/manifest.json'  # Now only checks for manifest.json changes
+    paths: ['src/manifest.json']  # Now only checks for manifest.json changes
 
 jobs:
   build:
