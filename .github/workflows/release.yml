@@ -5,6 +5,11 @@ on:
     branches: [main]
     paths: ['src/manifest.json']
 
+permissions:
+  contents: write
+  releases: write
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
