@@ -9,7 +9,6 @@ permissions:
   contents: write
   releases: write
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,34 +17,32 @@ jobs:
       # 1. Checkout code
       - uses: actions/checkout@v4
 
-      # 2. Install Chromium-based Browsers
+      # 2. Read version from manifest.json
+      - id: get_version
+        run: |
+          VERSION=$(jq -r '.version' src/manifest.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Using version: $VERSION"
+
+      # 3. Install Chromium-based Browsers
       - name: Install Chromium-based Browsers
         run: |
           sudo apt-get update
           sudo apt-get install -y wget gnupg software-properties-common
 
-          # Google Chrome
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-          # Chromium (fallback)
           sudo apt-get install -y chromium-browser
-
-      # 3. Verify Installed Browsers
-      - name: Verify Browser Installations
-        run: |
-          google-chrome --version || true
-          chromium-browser --version || true
 
       # 4. Create ZIP Package
       - name: Package ZIP
         run: |
           cd src
-          zip -r ../extension_latest.zip *
+          zip -r ../extension_v${VERSION}.zip *
           cd ..
-          ls -la
 
       # 5. Create CRX Package
       - name: Package CRX
@@ -54,52 +51,42 @@ jobs:
         run: |
           if [ -z "$PRIVATE_KEY" ]; then
             echo "Warning: No private key found, skipping CRX creation"
-            touch extension_latest.crx
+            touch extension_v${VERSION}.crx
           else
             echo "$PRIVATE_KEY" > key.pem
 
-            # Determine which browser CLI is available
             if command -v google-chrome > /dev/null; then
               BROWSER_CLI="google-chrome"
             elif command -v chromium-browser > /dev/null; then
               BROWSER_CLI="chromium-browser"
-            elif command -v microsoft-edge > /dev/null; then
-              BROWSER_CLI="microsoft-edge"
             else
               echo "❌ No Chromium-based browser with --pack-extension found"
               exit 1
             fi
 
-            echo "Using $BROWSER_CLI to create CRX"
             "$BROWSER_CLI" --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
-
-            mv src.crx extension_latest.crx
+            mv src.crx extension_v${VERSION}.crx
             rm key.pem
           fi
-          ls -la
 
-      # 6. Upload Artifacts (optional step for GitHub UI access)
+      # 6. Upload Artifacts (optional)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: extension-build
           path: |
-            extension_latest.zip
-            extension_latest.crx
-          retention-days: 7
-          if-no-files-found: warn
+            extension_v${{ env.VERSION }}.zip
+            extension_v${{ env.VERSION }}.crx
 
-      # 7. Create or Overwrite GitHub Release
+      # 7. Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: latest
-          name: "Latest Extension Build"
-          body: "Automatically built Chrome extension packages."
+          tag_name: v${{ env.VERSION }}
+          name: "Extension v${{ env.VERSION }}"
+          body: "Automatically built extension version ${{ env.VERSION }}"
           files: |
-            extension_latest.zip
-            extension_latest.crx
-          draft: false
-          prerelease: false
+            extension_v${{ env.VERSION }}.zip
+            extension_v${{ env.VERSION }}.crx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
