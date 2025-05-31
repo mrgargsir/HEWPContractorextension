@@ -1,8 +1,8 @@
 # HEWPextension
 ## 📦 Download
 
-- [⬇️ Download ZIP](https://github.com/mrgargsir/HEWPContractorextension/releases/download/latest/extension_latest.zip)
-- [⬇️ Download CRX](https://github.com/mrgargsir/HEWPContractorextension/releases/download/latest/extension_latest.crx)
+[Download extension ZIP (latest version)](https://github.com/mrgargsir/HEWPContractorextension/releases/latest)
+
 
 There is also Excel Helpful Utility Available [Click here](https://github.com/mrgargsir/HEWPExcelADDins)
 
