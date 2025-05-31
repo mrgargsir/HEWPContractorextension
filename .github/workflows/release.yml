@@ -3,11 +3,12 @@ name: Chrome Extension Packager
 on:
   push:
     branches: [main]
-    paths: ['src/manifest.json']  # Now only checks for manifest.json changes
+    paths: ['src/manifest.json']
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       # 1. Checkout code
       - uses: actions/checkout@v4
@@ -37,7 +38,7 @@ jobs:
       - name: Package ZIP
         run: |
           cd src
-          zip -r ../extension_${{ github.sha }}.zip *
+          zip -r ../extension_latest.zip *
           cd ..
           ls -la
 
@@ -48,7 +49,7 @@ jobs:
         run: |
           if [ -z "$PRIVATE_KEY" ]; then
             echo "Warning: No private key found, skipping CRX creation"
-            touch extension_${{ github.sha }}.crx
+            touch extension_latest.crx
           else
             echo "$PRIVATE_KEY" > key.pem
 
@@ -67,32 +68,33 @@ jobs:
             echo "Using $BROWSER_CLI to create CRX"
             "$BROWSER_CLI" --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
 
-            mv src.crx extension_${{ github.sha }}.crx
+            mv src.crx extension_latest.crx
             rm key.pem
           fi
           ls -la
 
-      # 6. Upload Artifacts
+      # 6. Upload Artifacts (optional step for GitHub UI access)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: extension-build
           path: |
-            extension_${{ github.sha }}.zip
-            extension_${{ github.sha }}.crx
+            extension_latest.zip
+            extension_latest.crx
           retention-days: 7
           if-no-files-found: warn
 
-      # 7. Create GitHub Release
+      # 7. Create or Overwrite GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        if: success() || failure()
         with:
-          tag_name: v${{ github.sha }}
-          name: "Extension v${{ github.sha }}"
-          body: "Automatically built extension packages"
+          tag_name: latest
+          name: "Latest Extension Build"
+          body: "Automatically built Chrome extension packages."
           files: |
-            extension_${{ github.sha }}.zip
-            extension_${{ github.sha }}.crx
+            extension_latest.zip
+            extension_latest.crx
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
