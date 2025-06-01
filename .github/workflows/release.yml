@@ -36,11 +36,11 @@ jobs:
           echo "GitHub Event Name: $GITHUB_EVENT_NAME"
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            # Manual run: add 0.000001 to patch
-            NEW_PATCH=$(echo "$PATCH + 0.000001" | bc -l)
+            # Manual run: add 0.0001 to patch
+            NEW_PATCH=$(echo "$PATCH + 0.0001" | bc -l)
             NEW_PATCH_FORMATTED=$(printf "%.6f" "$NEW_PATCH" | sed 's/^0*//')
             FINAL_VERSION="${MAJOR}.${MINOR}${NEW_PATCH_FORMATTED}"
-            echo "Manual run: bump patch by 0.000001 to $NEW_PATCH_FORMATTED"
+            echo "Manual run: bump patch by 0.0001 to $NEW_PATCH_FORMATTED"
 
           else
             # Push event: check if manifest.json changed in last commit
