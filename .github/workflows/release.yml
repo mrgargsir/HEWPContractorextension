@@ -15,83 +15,72 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - uses: actions/checkout@v4
 
-      # 2. Get and calculate version
       - id: get_version
         run: |
-          # Extract base version from manifest.json
+          get_highest_version() {
+            V1=$1
+            V2=$2
+            printf "%s\n%s" "$V1" "$V2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1
+          }
+
           VERSION_RAW=$(jq -r '.version' src/manifest.json)
           echo "Base version from manifest.json: $VERSION_RAW"
 
-          # Parse version parts (major.minor.patch)
-          IFS='.' read -r MAJOR MINOR PATCH <<<"${VERSION_RAW}"
+          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' | sed 's/^v//' || echo "")
+          echo "Latest GitHub Release: $RELEASE_VERSION"
 
-          # Default patch to 0 if empty
-          if [ -z "$PATCH" ]; then
-            PATCH=0
+          if [ -z "$RELEASE_VERSION" ]; then
+            HIGH_VERSION=$VERSION_RAW
+          else
+            HIGH_VERSION=$(get_highest_version "$VERSION_RAW" "$RELEASE_VERSION")
           fi
 
+          IFS='.' read -r MAJOR MINOR PATCH <<<"$HIGH_VERSION"
+          MAJOR=$(printf "%02d" "$MAJOR")
+          MINOR=$(printf "%02d" "$MINOR")
+          PATCH=${PATCH:-0}
+          PATCH=$(printf "%03d" "$PATCH")
+
           echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            # Manual run: add 0.0001 to patch
-            NEW_PATCH=$(echo "$PATCH + 0.0001" | bc -l)
-            NEW_PATCH_FORMATTED=$(printf "%.6f" "$NEW_PATCH" | sed 's/^0*//')
-            FINAL_VERSION="${MAJOR}.${MINOR}${NEW_PATCH_FORMATTED}"
-            echo "Manual run: bump patch by 0.0001 to $NEW_PATCH_FORMATTED"
-
+            NEW_PATCH=$(printf "%03d" $((10#$PATCH + 1)))
+            FINAL_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+          elif echo "$CHANGED_FILES" | grep -q "^src/manifest.json$"; then
+            FINAL_VERSION="${MAJOR}.${MINOR}"
           else
-            # Push event: check if manifest.json changed in last commit
-            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
-            echo "Changed files in last commit:"
-            echo "$CHANGED_FILES"
-
-            if echo "$CHANGED_FILES" | grep -q "^src/manifest.json$"; then
-              echo "manifest.json changed, use base version $VERSION_RAW"
-              FINAL_VERSION=$VERSION_RAW
-            else
-              # bump patch by 0.01
-              NEW_PATCH=$(echo "$PATCH + 0.01" | bc -l)
-              NEW_PATCH_FORMATTED=$(printf "%.2f" "$NEW_PATCH" | sed 's/^0*//')
-              FINAL_VERSION="${MAJOR}.${MINOR}${NEW_PATCH_FORMATTED}"
-              echo "manifest.json NOT changed, bump patch by 0.01 to $NEW_PATCH_FORMATTED"
-            fi
+            NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
+            FINAL_VERSION="${MAJOR}.${NEW_MINOR}"
           fi
 
           echo "Computed final version: $FINAL_VERSION"
           echo "VERSION=$FINAL_VERSION" >> $GITHUB_ENV
-          
-      # 2.1 Update version in manifest.json (without committing)
+
       - name: Update manifest.json version
         run: |
           jq --arg v "${VERSION}" '.version = $v' src/manifest.json > src/manifest.tmp.json
           mv src/manifest.tmp.json src/manifest.json
           echo "Updated manifest.json to version ${VERSION}"
 
-          
-      # 3. Install Chromium-based Browsers
       - name: Install Chromium-based Browsers
         run: |
           sudo apt-get update
           sudo apt-get install -y wget gnupg software-properties-common
-
           wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-
           sudo apt-get install -y chromium-browser
 
-      # 4. Create ZIP Package
       - name: Package ZIP
         run: |
           cd src
           zip -r ../ChromeExtension_v${VERSION}.zip *
           cd ..
 
-      # 5. Create CRX Package
       - name: Package CRX
         env:
           PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}
@@ -101,22 +90,19 @@ jobs:
             touch ChromeExtension_v${VERSION}.crx
           else
             echo "$PRIVATE_KEY" > key.pem
-
             if command -v google-chrome > /dev/null; then
               BROWSER_CLI="google-chrome"
             elif command -v chromium-browser > /dev/null; then
               BROWSER_CLI="chromium-browser"
             else
-              echo "❌ No Chromium-based browser with --pack-extension found"
+              echo "❌ No Chromium-based browser found"
               exit 1
             fi
-
             "$BROWSER_CLI" --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
             mv src.crx ChromeExtension_v${VERSION}.crx
             rm key.pem
           fi
 
-      # 6. Upload Artifacts (optional)
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -125,7 +111,6 @@ jobs:
             ChromeExtension_v${{ env.VERSION }}.zip
             ChromeExtension_v${{ env.VERSION }}.crx
 
-      # 7. Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
