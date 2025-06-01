@@ -62,7 +62,15 @@ jobs:
 
           echo "Computed final version: $FINAL_VERSION"
           echo "VERSION=$FINAL_VERSION" >> $GITHUB_ENV
+          
+      # 2.1 Update version in manifest.json (without committing)
+      - name: Update manifest.json version
+        run: |
+          jq --arg v "${VERSION}" '.version = $v' src/manifest.json > src/manifest.tmp.json
+          mv src/manifest.tmp.json src/manifest.json
+          echo "Updated manifest.json to version ${VERSION}"
 
+          
       # 3. Install Chromium-based Browsers
       - name: Install Chromium-based Browsers
         run: |
