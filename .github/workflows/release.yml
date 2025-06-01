@@ -37,27 +37,37 @@ jobs:
             HIGH_VERSION=$(get_highest_version "$VERSION_RAW" "$RELEASE_VERSION")
           fi
 
-          IFS='.' read -r MAJOR MINOR PATCH <<<"$HIGH_VERSION"
-          MAJOR=$(printf "%02d" "$MAJOR")
-          MINOR=$(printf "%02d" "$MINOR")
+          # Parse version parts, default patch to 0
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$HIGH_VERSION"
           PATCH=${PATCH:-0}
-          PATCH=$(printf "%03d" "$PATCH")
+
+          # Convert parts to integers to remove any leading zeros
+          MAJOR=$((10#$MAJOR))
+          MINOR=$((10#$MINOR))
+          PATCH=$((10#$PATCH))
 
           echo "GitHub Event Name: $GITHUB_EVENT_NAME"
           CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
 
+          # Increment version parts based on event or changed files
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            NEW_PATCH=$(printf "%03d" $((10#$PATCH + 1)))
-            FINAL_VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+            PATCH=$((PATCH + 1))
           elif echo "$CHANGED_FILES" | grep -q "^src/manifest.json$"; then
-            FINAL_VERSION="${MAJOR}.${MINOR}"
+            # If manifest changed, reset patch to zero (keep major.minor)
+            PATCH=0
           else
-            NEW_MINOR=$(printf "%02d" $((10#$MINOR + 1)))
-            FINAL_VERSION="${MAJOR}.${NEW_MINOR}"
+            # Otherwise bump minor, reset patch to zero
+            MINOR=$((MINOR + 1))
+            PATCH=0
           fi
+
+          FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
           echo "Computed final version: $FINAL_VERSION"
           echo "VERSION=$FINAL_VERSION" >> $GITHUB_ENV
+
+      - name: Debug VERSION
+        run: echo "VERSION=$VERSION"
 
       - name: Update manifest.json version
         run: |
