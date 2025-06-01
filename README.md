@@ -9,6 +9,6 @@ IF PACKAGE NOT FOUND THEN DOWNLOAD ZIP AND LOAD UNPACKED EXTENSION FROM SRC DIRE
 
 Check for Updated HEWP Tools Utility Available : [Click here for released Version](https://github.com/mrgargsir/HEWPExcelADDins/releases/latest)
 
-Check for Updated HEWP Tools Utility Available : [Click here for Manually Download Repo](https://github.com/mrgargsir/HEWPExcelADDins/releases/latest)
+Check for Updated HEWP Tools Utility Available : [Click here for Manually Download Repo](https://github.com/mrgargsir/HEWPExcelADDins/)
 
 
