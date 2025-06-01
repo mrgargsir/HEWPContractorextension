@@ -41,7 +41,7 @@ jobs:
       - name: Package ZIP
         run: |
           cd src
-          zip -r ../extension_v${VERSION}.zip *
+          zip -r ../ChromeExtension_v${VERSION}.zip *
           cd ..
 
       # 5. Create CRX Package
@@ -51,7 +51,7 @@ jobs:
         run: |
           if [ -z "$PRIVATE_KEY" ]; then
             echo "Warning: No private key found, skipping CRX creation"
-            touch extension_v${VERSION}.crx
+            touch ChromeExtension_v${VERSION}.crx
           else
             echo "$PRIVATE_KEY" > key.pem
 
@@ -65,7 +65,7 @@ jobs:
             fi
 
             "$BROWSER_CLI" --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
-            mv src.crx extension_v${VERSION}.crx
+            mv src.crx ChromeExtension_v${VERSION}.crx
             rm key.pem
           fi
 
@@ -73,20 +73,20 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: extension-build
+          name: ChromeExtension-build
           path: |
-            extension_v${{ env.VERSION }}.zip
-            extension_v${{ env.VERSION }}.crx
+            ChromeExtension_v${{ env.VERSION }}.zip
+            ChromeExtension_v${{ env.VERSION }}.crx
 
       # 7. Create GitHub Release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ env.VERSION }}
-          name: "Extension v${{ env.VERSION }}"
+          name: "ChromeExtension v${{ env.VERSION }}"
           body: "Automatically built extension version ${{ env.VERSION }}"
           files: |
-            extension_v${{ env.VERSION }}.zip
-            extension_v${{ env.VERSION }}.crx
+            ChromeExtension_v${{ env.VERSION }}.zip
+            ChromeExtension_v${{ env.VERSION }}.crx
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
