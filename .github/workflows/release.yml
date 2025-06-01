@@ -3,12 +3,12 @@ name: Chrome Extension Packager
 on:
   push:
     branches: [main]
-    paths: ['src/manifest.json']
+    paths:
+      - 'src/**'
   workflow_dispatch:
 
 permissions:
   contents: write
-  
 
 jobs:
   build:
@@ -18,12 +18,50 @@ jobs:
       # 1. Checkout code
       - uses: actions/checkout@v4
 
-      # 2. Read version from manifest.json
+      # 2. Get and calculate version
       - id: get_version
         run: |
-          VERSION=$(jq -r '.version' src/manifest.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Using version: $VERSION"
+          # Extract base version from manifest.json
+          VERSION_RAW=$(jq -r '.version' src/manifest.json)
+          echo "Base version from manifest.json: $VERSION_RAW"
+
+          # Parse version parts (major.minor.patch)
+          IFS='.' read -r MAJOR MINOR PATCH <<<"${VERSION_RAW}"
+
+          # Default patch to 0 if empty
+          if [ -z "$PATCH" ]; then
+            PATCH=0
+          fi
+
+          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            # Manual run: add 0.000001 to patch
+            NEW_PATCH=$(echo "$PATCH + 0.000001" | bc -l)
+            NEW_PATCH_FORMATTED=$(printf "%.6f" "$NEW_PATCH" | sed 's/^0*//')
+            FINAL_VERSION="${MAJOR}.${MINOR}${NEW_PATCH_FORMATTED}"
+            echo "Manual run: bump patch by 0.000001 to $NEW_PATCH_FORMATTED"
+
+          else
+            # Push event: check if manifest.json changed in last commit
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
+            echo "Changed files in last commit:"
+            echo "$CHANGED_FILES"
+
+            if echo "$CHANGED_FILES" | grep -q "^src/manifest.json$"; then
+              echo "manifest.json changed, use base version $VERSION_RAW"
+              FINAL_VERSION=$VERSION_RAW
+            else
+              # bump patch by 0.01
+              NEW_PATCH=$(echo "$PATCH + 0.01" | bc -l)
+              NEW_PATCH_FORMATTED=$(printf "%.2f" "$NEW_PATCH" | sed 's/^0*//')
+              FINAL_VERSION="${MAJOR}.${MINOR}${NEW_PATCH_FORMATTED}"
+              echo "manifest.json NOT changed, bump patch by 0.01 to $NEW_PATCH_FORMATTED"
+            fi
+          fi
+
+          echo "Computed final version: $FINAL_VERSION"
+          echo "VERSION=$FINAL_VERSION" >> $GITHUB_ENV
 
       # 3. Install Chromium-based Browsers
       - name: Install Chromium-based Browsers
