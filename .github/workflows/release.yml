@@ -17,16 +17,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Determine Version
-        id: get_version
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
+      - id: get_version
         run: |
           get_highest_version() {
-          V1=$1
-          V2=$2
-          printf "%s\n%s" "$V1" "$V2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1
+            V1=$1
+            V2=$2
+            printf "%s\n%s" "$V1" "$V2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1
           }
 
           VERSION_RAW=$(jq -r '.version' src/manifest.json)
@@ -36,44 +32,58 @@ jobs:
           echo "Latest GitHub Release: $RELEASE_VERSION"
 
           if [ -z "$RELEASE_VERSION" ]; then
-          HIGH_VERSION=$VERSION_RAW
+            HIGH_VERSION=$VERSION_RAW
           else
-          HIGH_VERSION=$(get_highest_version "$VERSION_RAW" "$RELEASE_VERSION")
-         fi
+            HIGH_VERSION=$(get_highest_version "$VERSION_RAW" "$RELEASE_VERSION")
+          fi
 
+          # Parse version parts, default patch to 0
           IFS='.' read -r MAJOR MINOR PATCH <<< "$HIGH_VERSION"
           PATCH=${PATCH:-0}
+
+          # Convert parts to integers to remove any leading zeros
           MAJOR=$((10#$MAJOR))
           MINOR=$((10#$MINOR))
           PATCH=$((10#$PATCH))
 
           echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
 
-          if git rev-parse HEAD~1 >/dev/null 2>&1; then
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
-          else
-          CHANGED_FILES=$(git diff --name-only HEAD)
-          fi
-
-          echo "Changed files: $CHANGED_FILES"
-
+          # Increment version parts based on event or changed files
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-          PATCH=$((PATCH + 1))
+            PATCH=$((PATCH + 1))
           elif echo "$CHANGED_FILES" | grep -q "^src/manifest.json$"; then
-          PATCH=0
+            # If manifest changed, reset patch to zero (keep major.minor)
+            PATCH=0
           else
-          MINOR=$((MINOR + 1))
-          PATCH=0
+            # Otherwise bump minor, reset patch to zero
+            MINOR=$((MINOR + 1))
+            PATCH=0
           fi
 
           FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+
           echo "Computed final version: $FINAL_VERSION"
           echo "VERSION=$FINAL_VERSION" >> $GITHUB_ENV
 
+      - name: Debug VERSION
+        run: echo "VERSION=$VERSION"
+
       - name: Update manifest.json version
         run: |
-          jq --arg v "$VERSION" '.version = $v' src/manifest.json > src/manifest.tmp.json
+          jq --arg v "${VERSION}" '.version = $v' src/manifest.json > src/manifest.tmp.json
           mv src/manifest.tmp.json src/manifest.json
+          echo "Updated manifest.json to version ${VERSION}"
+
+      - name: Install Chromium-based Browsers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg software-properties-common
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          sudo apt-get install -y chromium-browser
 
       - name: Package ZIP
         run: |
@@ -86,23 +96,24 @@ jobs:
           PRIVATE_KEY: ${{ secrets.EXTENSION_KEY }}
         run: |
           if [ -z "$PRIVATE_KEY" ]; then
-            echo "⚠️ No private key found. Skipping CRX creation."
+            echo "Warning: No private key found, skipping CRX creation"
             touch ChromeExtension_v${VERSION}.crx
           else
             echo "$PRIVATE_KEY" > key.pem
             if command -v google-chrome > /dev/null; then
-              google-chrome --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
+              BROWSER_CLI="google-chrome"
             elif command -v chromium-browser > /dev/null; then
-              chromium-browser --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
+              BROWSER_CLI="chromium-browser"
             else
-              echo "❌ No Chromium browser found"
+              echo "❌ No Chromium-based browser found"
               exit 1
             fi
+            "$BROWSER_CLI" --no-sandbox --pack-extension=./src --pack-extension-key=key.pem
             mv src.crx ChromeExtension_v${VERSION}.crx
             rm key.pem
           fi
 
-      - name: Upload Artifacts
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ChromeExtension-build
