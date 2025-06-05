@@ -16,9 +16,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+       # Fetch full Git history (fix for HEAD^ error)
+      - name: Fetch full Git history
+        run: git fetch --unshallow || true
 
-      - id: get_version
-        run: |
+        # Determine Version (Push/Manual)
+      - name: Determine Version
+
+         id: get_version
+         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         run: |
+            # Function to compare versions and return highest
           get_highest_version() {
             V1=$1
             V2=$2
@@ -28,7 +37,8 @@ jobs:
           VERSION_RAW=$(jq -r '.version' src/manifest.json)
           echo "Base version from manifest.json: $VERSION_RAW"
 
-          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' | sed 's/^v//' || echo "")
+          # Get latest release tag (e.g. 02.12.003) from GitHub releases via CLI
+          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' || echo "")
           echo "Latest GitHub Release: $RELEASE_VERSION"
 
           if [ -z "$RELEASE_VERSION" ]; then
@@ -46,8 +56,19 @@ jobs:
           MINOR=$((10#$MINOR))
           PATCH=$((10#$PATCH))
 
-          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
+          echo "GitHub Event: $GITHUB_EVENT_NAME"
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+
+          # If BEFORE commit invalid (like first commit), fallback to root commit
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            BEFORE=$(git rev-list --max-parents=0 HEAD | tail -n1)
+          fi
+
+          # Get changed files between commits
+          CHANGED_FILES=$(git diff --name-only "$BEFORE" "$AFTER" || true)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
 
           # Increment version parts based on event or changed files
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
