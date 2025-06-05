@@ -23,15 +23,22 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           get_highest_version() {
-            V1=$1
-            V2=$2
-            printf "%s\n%s" "$V1" "$V2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1
+          V1=$1
+          V2=$2
+          printf "%s\n%s" "$V1" "$V2" | sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1
           }
 
           VERSION_RAW=$(jq -r '.version' src/manifest.json)
-          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' | sed 's/^v//' || echo "")
+          echo "Base version from manifest.json: $VERSION_RAW"
 
-          [ -z "$RELEASE_VERSION" ] && HIGH_VERSION="$VERSION_RAW" || HIGH_VERSION=$(get_highest_version "$VERSION_RAW" "$RELEASE_VERSION")
+          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' | sed 's/^v//' || echo "")
+          echo "Latest GitHub Release: $RELEASE_VERSION"
+
+          if [ -z "$RELEASE_VERSION" ]; then
+          HIGH_VERSION=$VERSION_RAW
+          else
+          HIGH_VERSION=$(get_highest_version "$VERSION_RAW" "$RELEASE_VERSION")
+         fi
 
           IFS='.' read -r MAJOR MINOR PATCH <<< "$HIGH_VERSION"
           PATCH=${PATCH:-0}
@@ -39,18 +46,27 @@ jobs:
           MINOR=$((10#$MINOR))
           PATCH=$((10#$PATCH))
 
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD || true)
+          echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+          else
+          CHANGED_FILES=$(git diff --name-only HEAD)
+          fi
+
+          echo "Changed files: $CHANGED_FILES"
 
           if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            PATCH=$((PATCH + 1))
+          PATCH=$((PATCH + 1))
           elif echo "$CHANGED_FILES" | grep -q "^src/manifest.json$"; then
-            PATCH=0
+          PATCH=0
           else
-            MINOR=$((MINOR + 1))
-            PATCH=0
+          MINOR=$((MINOR + 1))
+          PATCH=0
           fi
 
           FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          echo "Computed final version: $FINAL_VERSION"
           echo "VERSION=$FINAL_VERSION" >> $GITHUB_ENV
 
       - name: Update manifest.json version
