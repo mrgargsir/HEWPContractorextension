@@ -39,7 +39,11 @@ jobs:
           # Get latest release tag (e.g. 02.12.003) from GitHub releases via CLI
           RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' || echo "")
           echo "Latest GitHub Release: $RELEASE_VERSION"
-
+          
+          # Remove leading "v" if present
+          RELEASE_VERSION=${RELEASE_VERSION#v}
+          echo "Release version without prefix: $RELEASE_VERSION"
+          
           if [ -z "$RELEASE_VERSION" ]; then
             HIGH_VERSION=$VERSION_RAW
           else
