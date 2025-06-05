@@ -38,7 +38,7 @@ jobs:
           echo "Base version from manifest.json: $VERSION_RAW"
 
           # Get latest release tag (e.g. 02.12.003) from GitHub releases via CLI
-          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' || echo "")
+          RELEASE_VERSION=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
           echo "Latest GitHub Release: $RELEASE_VERSION"
 
           if [ -z "$RELEASE_VERSION" ]; then
