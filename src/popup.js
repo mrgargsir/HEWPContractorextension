@@ -1,17 +1,143 @@
+// Fetch latest version from GitHub releases
+document.addEventListener('DOMContentLoaded', () => {
+  let latestZipUrl = ''; // Store ZIP download URL
+
+  // Fetch latest release once
+  fetch('https://api.github.com/repos/mrgargsir/HEWPContractorextension/releases/latest')
+    .then(response => response.json())
+    .then(data => {
+      const version = data.tag_name;
+      const versionEl = document.getElementById('versionext');
+      const downloadEl = document.getElementById('downloadext');
+
+      if (versionEl) versionEl.textContent = `Chrome Extension Latest Version: ${version}`;
+
+      const zipAsset = data.assets.find(asset =>
+        asset.name.endsWith('.zip')
+      );
+
+      if (zipAsset) {
+        latestZipUrl = zipAsset.browser_download_url;
+        if (downloadEl) {
+          downloadEl.innerHTML = `<a href="${latestZipUrl}" target="_blank">Download Extension ZIP</a>`;
+        }
+      } else {
+        if (downloadEl) downloadEl.textContent = 'ZIP not found in release assets.';
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching release info:', error);
+      const versionEl = document.getElementById('versionext');
+      const downloadEl = document.getElementById('downloadext');
+      if (versionEl) versionEl.textContent = 'Failed to fetch version.';
+      if (downloadEl) downloadEl.textContent = '';
+    });
+
+  // Button to trigger download
+  const downloadBtn = document.getElementById('openNewTabBtn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      if (latestZipUrl) {
+        const a = document.createElement('a');
+        a.href = latestZipUrl;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setStatus('Downloading extension ZIP...');
+      } else {
+        setStatus('Download link not ready. Try again shortly.');
+      }
+    });
+  }
+
+  // Status helper
+  function setStatus(text) {
+    const status = document.getElementById('statusext');
+    if (status) {
+      status.textContent = text;
+      setTimeout(() => {
+        status.textContent = '';
+      }, 2000);
+    }
+  }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  let excelZipUrl = '';
+
+  // Fetch latest Excel Add-in release info
+  fetch('https://api.github.com/repos/mrgargsir/HEWPExcelADDins/releases/latest')
+    .then(response => response.json())
+    .then(data => {
+      const version = data.tag_name;
+      const versionEl = document.getElementById('excelversion');
+      const downloadEl = document.getElementById('exceldownloadext');
+
+      if (versionEl) versionEl.textContent = `Excel Full Utility Latest Version: ${version}`;
+
+      const zipAsset = data.assets.find(asset => asset.name.endsWith('.zip'));
+
+      if (zipAsset) {
+        excelZipUrl = zipAsset.browser_download_url;
+        if (downloadEl) {
+          downloadEl.innerHTML = `<a href="${excelZipUrl}" target="_blank">Download Add-in ZIP</a>`;
+        }
+      } else {
+        if (downloadEl) downloadEl.textContent = 'ZIP not found in release assets.';
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching Excel Add-in release info:', error);
+      const versionEl = document.getElementById('excelversion');
+      const downloadEl = document.getElementById('exceldownloadext');
+      if (versionEl) versionEl.textContent = 'Failed to fetch version.';
+      if (downloadEl) downloadEl.textContent = '';
+    });
+
+  // Excel button downloads the ZIP
+  const excelBtn = document.getElementById('Excel');
+  if (excelBtn) {
+    excelBtn.addEventListener('click', () => {
+      if (excelZipUrl) {
+        const a = document.createElement('a');
+        a.href = excelZipUrl;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setStatus('Downloading Excel Add-in ZIP...');
+      } else {
+        setStatus('Download link not ready. Try again shortly.');
+      }
+    });
+  }
+
+  // Status helper
+  function setStatus(text) {
+    const status = document.getElementById('statusexl');
+    if (status) {
+      status.textContent = text;
+      setTimeout(() => {
+        status.textContent = '';
+      }, 2000);
+    }
+  }
+});
+
+
+
+
+
+
+
 document.getElementById('reloadBtn').addEventListener('click', () => {
   chrome.runtime.reload();
   setStatus('Extension reloaded');
 });
 
-document.getElementById('openNewTabBtn').addEventListener('click', () => {
-  chrome.tabs.create({ url: 'https://github.com/mrgargsir/HEWPContractorextension/releases' });
-  setStatus('CHECK THE RELEASES PAGE FOR UPDATES');
-});
 
-document.getElementById('Excel').addEventListener('click', () => {
-  chrome.tabs.create({ url: 'https://github.com/mrgargsir/HEWPExcelADDins/releases' });
-  setStatus('XLS ADDIN RELEASES PAGE OPENED');
-});
 
 document.getElementById('hsrBtn').addEventListener('click', () => {
   chrome.tabs.create({ url: 'https://github.com/mrgargsir/HEWPExcelADDins/raw/refs/heads/main/OtherFiles/HSR.xlsx' });
@@ -68,6 +194,12 @@ toggle.addEventListener('change', () => {
     localStorage.setItem('theme', 'light');
   }
 });
+
+
+
+
+
+
 
 // Helper to show status text briefly
 function setStatus(text) {
