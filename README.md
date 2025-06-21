@@ -48,4 +48,6 @@ This Chrome extension automatically installs a curated set of helpful bookmarks 
 
 ⚖️ Max Quantity Calc (⚖️MaxQTY): Calculates and shows allowed quantity (+25%) for execution.
 
+🔍 Template Search (🔍Template): Adds an intuitive template search input box with real-time filtering.
+
 👨‍💻 Developer Link (DEV): Redirects to the developer's GitHub for updates or contributions.
