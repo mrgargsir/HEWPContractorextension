@@ -15,11 +15,14 @@
     body {
       margin: 0;
       padding: 0;
-      height: 600px;
+      min-width: 320px;
+      max-width: 400px;
       width: 350px;
+      /* Remove height! */
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
 
     body.light {
@@ -32,7 +35,33 @@
       color: #ffffff;
     }
 
-    .container {
+    .name {
+      width: 100%;
+      text-align: center; /* Center the text */
+      margin: 0;
+      padding: 18px 0 0 0;
+      position: fixed;
+      top: -10px;
+      left: 0;
+      z-index: 200;
+      background: transparent;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .name h1 {
+      font-size: 20px;
+      margin: 0;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 2px 8px #0004;
+      pointer-events: auto;
+    }
+
+    .container,
+    .toggler-container {
       background: rgba(255, 255, 255, 0.12);
       backdrop-filter: blur(15px);
       border-radius: 20px;
@@ -40,7 +69,13 @@
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
       text-align: center;
       width: 90%;
+      max-width: 370px;
+      min-width: 260px;
       position: relative;
+      margin-top: 45px;
+      margin-bottom: 56px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     h1 {
@@ -59,20 +94,20 @@
       border: none;
       color: white;
       font-weight: 700;
-      padding: 14px 24px;
+      padding: 8px 14px;
       cursor: pointer;
-      font-size: 15px;
-      box-shadow: 0 0 10px rgba(0, 198, 255, 0.7),
-                  0 0 20px rgba(0, 114, 255, 0.6),
-                  0 0 30px rgba(0, 198, 255, 0.5);
+      font-size: 13px;
+      box-shadow: 0 0 5px rgba(0, 198, 255, 0.7),
+                  0 0 10px rgba(0, 114, 255, 0.6),
+                  0 0 20px rgba(0, 198, 255, 0.5);
       transition: all 0.5s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 15px;
       position: relative;
       overflow: hidden;
-      border-radius: 30px; /* pill shape by default */
+      border-radius: 22px;
       user-select: none;
     }
 
@@ -133,8 +168,9 @@
       color: #ffeb3b;
     }
     .footer {
-      margin-top: 12px;
+      margin-top: 0px;
       font-size: 12px;
+      padding-bottom: 0;
     } 
     /* Specific buttons styling & colors */
 
@@ -242,11 +278,46 @@
 
     /* Slider Toggle */
     .toggle-container {
+      margin-top: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .toggle-container-horizontal {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      justify-content: center;
       margin-top: 8px;
+      margin-bottom: 6px;
+    }
+
+    .toggle-container-horizontal .toggle-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 5px;
+      gap: 2px;
+    }
+
+    .toggle-container-vertical {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toggle-label {
+      min-width: 70px;
+      font-weight: 600;
+      font-size: 13px;
     }
 
     .switch {
@@ -291,12 +362,93 @@
       transform: translateX(22px);
     }
 
-    
+    .switch:hover .slider {
+      box-shadow: 0 0 8px #2196f3, 0 0 2px #fff;
+      background-color: #42a5f5;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .switch input:focus + .slider {
+      outline: 2px solid #42a5f5;
+    }
+
+    /* Move installed version to bottom, outside of main container padding */
+    #installed-version {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 2px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0fd512;
+      background: transparent;
+      z-index: 100;
+      padding-bottom: 2px;
+      pointer-events: none;
+    }
+    #installed-version a {
+      color: #0fd512 !important;
+      pointer-events: auto;
+    }
+    .footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      text-align: center;
+      background: transparent;
+      z-index: 100;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fffacd;
+      pointer-events: auto;
+    }
+    #status {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 45px;
+      
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffeb3b;
+      z-index: 101;
+      background: transparent;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #status.visible {
+      opacity: 1;
+    }
+
+    .toggler-container {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(5px);
+      border-radius: 20px;
+      padding: 2px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      width: auto;
+      position: relative;
+      margin-top: 12px;
+      margin-bottom: -10px;
+      margin-left: -10px;
+      margin-right: -10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body class="light">
-  <div class="container">
+  <div class="name">
     <h1>🚀HEWP Tool Extension</h1>
+  </div>
+  <div class="container">
+    
     <div class="button-container">
 
       <button id="reloadBtn" title="Reload extension">
@@ -346,30 +498,54 @@
       <button id="copyUPI">Copy UPI ID</button>
     </div>
 
-    <div id="status"></div>
-    <div class="footer" style="font-weight: 700; font-size: 13px;">
-  Made with ❤️ by 
-  <a href="https://github.com/mrgargsir" target="_blank" style="color: #fffacd; font-weight: 800; text-decoration: none; font-style: italic;">
-    @mrgargsir
-  </a>
-  <br>
-  <a href="https://github.com/mrgargsir/HEWPContractorextension/releases/latest" target="_blank" style="color: #0fd512; font-weight: 600; text-decoration: black; font-style: italic;">
-       Installed version 3.2.0 
-  </a>
-    
-</div>
-
-    <div class="toggle-container">
-      <label for="darkModeToggle">Dark Mode</label>
-      <label class="switch">
-        <input type="checkbox" id="darkModeToggle" />
-        <span class="slider"></span>
-      </label>
+    <div class="toggler-container">
+      <div class="toggle-container-horizontal">
+        <div class="toggle-row">
+          <label for="darkModeToggle" class="toggle-label">Dark Mode</label>
+          <label class="switch">
+            <input type="checkbox" id="darkModeToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="toggle-row">
+          <label for="fixEnterToggle" class="toggle-label">Fix Enter Button</label>
+          <label class="switch">
+            <input type="checkbox" id="fixEnterToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="toggle-container-vertical">
+        <div class="toggle-row">
+          <label for="volumeBoosterToggle" class="toggle-label">Volume Booster</label>
+          <label class="switch">
+            <input type="checkbox" id="volumeBoosterToggle" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="volumeBoostSliderContainer" style="display:none; margin-top:4px; text-align:center;">
+          <input type="range" id="volumeBoostSlider" min="0" max="200" value="100" style="vertical-align: middle;">
+          <span id="volumeBoostValue" style="margin-left:6px;">100%</span>
+        </div>
+      </div>
     </div>
-
+    <!-- Place the slider on a new line below the toggle-container -->
     
   </div>
   <script src="popup.js">
   </script>
+  <!-- Place this just before </body> -->
+ <div id="status"></div>
+<div class="footer" style="font-weight: 700; font-size: 13px;">
+  Made with ❤️ by 
+  <a href="https://github.com/mrgargsir" target="_blank" style="color: #fffacd; font-weight: 800; text-decoration: none; font-style: italic;">
+    @mrgargsir
+  </a>
+</div>
+<div id="installed-version">
+  <a href="https://github.com/mrgargsir/HEWPContractorextension/releases/latest" target="_blank" style="color: #0fd512; font-weight: 600; text-decoration: black; font-style: italic;">
+    Installed version 4.0.0
+  </a>
+</div>
 </body>
 </html>
