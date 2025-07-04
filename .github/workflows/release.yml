@@ -110,8 +110,9 @@ jobs:
 
       - name: Package ZIP
         run: |
-          cd src
-          zip -r ../ChromeExtension_v${VERSION}.zip *
+          mkdir -p ChromeExtension
+          cp -r src/* ChromeExtension/
+          zip -r ChromeExtension_v${VERSION}.zip ChromeExtension
           cd ..
 
       - name: Package CRX
