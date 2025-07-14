@@ -83,6 +83,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (downloadEl) downloadEl.textContent = '';
     });
 
+  // After excelZipUrl is set in the fetch for Excel Add-in:
+  const excelAddinBtn = document.getElementById('Excel');
+  if (excelAddinBtn) {
+    excelAddinBtn.addEventListener('click', () => {
+      if (excelZipUrl) {
+        const a = document.createElement('a');
+        a.href = excelZipUrl;
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setStatus('Downloading Add-in ZIP...');
+      } else {
+        setStatus('Download link not ready. Try again shortly.');
+      }
+    });
+  }
+
+
   // All DOM element event listeners go here:
   document.getElementById('reloadBtn').addEventListener('click', () => {
     chrome.runtime.reload();
