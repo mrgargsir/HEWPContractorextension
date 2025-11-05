@@ -109,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('hsrBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: 'https://github.com/mrgargsir/HEWPExcelADDins/raw/refs/heads/main/OtherFiles/HSR.xlsx' });
-    setStatus('HSR FILE OPENED');
+    chrome.tabs.create({ url: 'https://aratt.ai/@mrgargsir_tools' });
+    setStatus('CHANNEL OPENED');
   });
 
   document.getElementById('donateBtn').addEventListener('click', () => {
