@@ -112,6 +112,33 @@ function disableVolumeBoost() {
   });
 }
 
+// // Listen for toggle all checkboxes message from popup
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//   if (message.action === 'toggleAllCheckboxes') {
+//     // Get all checkboxes on the webpage
+//     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+//     // Determine if all are currently checked
+//     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    
+//     // Toggle each checkbox
+//     checkboxes.forEach(checkbox => {
+//       checkbox.checked = !allChecked;
+      
+//       // Trigger change and click events
+//       checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+//       checkbox.dispatchEvent(new Event('click', { bubbles: true }));
+//     });
+    
+//     // Send response back to popup
+//     sendResponse({ 
+//       success: true, 
+//       toggled: checkboxes.length 
+//     });
+//   }
+// });
+
+
 // Listen for popup messages
 chrome.runtime.onMessage.addListener((message) => {
   if (typeof message.darkMode !== "undefined") {

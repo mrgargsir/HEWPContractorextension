@@ -51,55 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fetch latest Excel Add-in release info
-  let excelZipUrl = '';
+  
 
-  // Fetch latest release once
-  fetch('https://api.github.com/repos/mrgargsir/HEWPExcelADDins/releases/latest')
-    .then(response => response.json())
-    .then(data => {
-      const version = data.tag_name;
-      const versionEl = document.getElementById('excelversion');
-      const downloadEl = document.getElementById('exceldownloadext');
-
-      if (versionEl) versionEl.textContent = `Excel Full Utility Latest Version: ${version}`;
-
-      const zipAsset = data.assets.find(asset => asset.name.endsWith('.zip'));
-
-      if (zipAsset) {
-        excelZipUrl = zipAsset.browser_download_url;
-        if (downloadEl) {
-          downloadEl.innerHTML = `<a href="${excelZipUrl}" target="_blank">Download Add-in ZIP</a>`;
-        }
-      } else {
-        if (downloadEl) downloadEl.textContent = 'ZIP not found in release assets.';
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching Excel Add-in release info:', error);
-      const versionEl = document.getElementById('excelversion');
-      const downloadEl = document.getElementById('exceldownloadext');
-      if (versionEl) versionEl.textContent = 'Failed to fetch version.';
-      if (downloadEl) downloadEl.textContent = '';
-    });
-
-  // After excelZipUrl is set in the fetch for Excel Add-in:
-  const excelAddinBtn = document.getElementById('Excel');
-  if (excelAddinBtn) {
-    excelAddinBtn.addEventListener('click', () => {
-      if (excelZipUrl) {
-        const a = document.createElement('a');
-        a.href = excelZipUrl;
-        a.download = '';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setStatus('Downloading Add-in ZIP...');
-      } else {
-        setStatus('Download link not ready. Try again shortly.');
-      }
-    });
-  }
 
 
   // All DOM element event listeners go here:
