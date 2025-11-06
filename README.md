@@ -14,9 +14,8 @@ IF PACKAGE NOT FOUND THEN DOWNLOAD ZIP AND LOAD UNPACKED EXTENSION FROM SRC DIRE
 # There is also HEWP Tools Utility Available
 ## 📦 Download
 
-Check for Updated HEWP Tools Utility Available : [Click here for released Version](https://github.com/mrgargsir/HEWPExcelADDins/releases/latest)
+Check for Updated HEWP Tools Utility Available : [Click here for released Version](https://aratt.ai/@mrgargsir_tools)
 
-Check for Updated HEWP Tools Utility Available : [Click here for Manually Download Repo](https://github.com/mrgargsir/HEWPExcelADDins/)
 
 🔧 HEWP Shortcuts & Autofill Bookmarks Extension
 This Chrome extension automatically installs a curated set of helpful bookmarks and smart JavaScript shortcuts for the Haryana Engineering Works Portal (HEWP). These bookmarks enhance user efficiency by simplifying navigation, auto-filling forms, and providing quick access to common portal features.
@@ -48,6 +47,8 @@ This Chrome extension automatically installs a curated set of helpful bookmarks 
 
 ⚖️ Max Quantity Calc (⚖️MaxQTY): Calculates and shows allowed quantity (+25%) for execution.
 
-🔍 Template Search (🔍Template): Adds an intuitive template search input box with real-time filtering.
+🔍 All Search (🔍Template): Adds an intuitive template search input box with real-time filtering.
+
+☑️Toggle Checkboxes: Check or Uncheck All Checkbox at once.
 
 👨‍💻 Developer Link (DEV): Redirects to the developer's GitHub for updates or contributions.
