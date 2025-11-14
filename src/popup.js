@@ -141,9 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
     sliderContainer.style.display = enabled ? 'inline-block' : 'none';
     chrome.tabs.query({active: true, currentWindow: true}, tabs => {
       if (tabs[0]) {
-        chrome.tabs.sendMessage(tabs[0].id, { 
+        chrome.tabs.sendMessage(tabs[0].id, {
           volumeBoost: enabled,
           volumeBoostLevel: enabled ? parseInt(slider.value, 10) : 100
+        }, (response) => {
+          if (chrome.runtime.lastError) {
+            // Silently ignore if content script not loaded
+            console.log('Message not received (page may need reload):', chrome.runtime.lastError.message);
+          }
         });
       }
     });
@@ -157,9 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (volumeToggle.checked) {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
         if (tabs[0]) {
-          chrome.tabs.sendMessage(tabs[0].id, { 
+          chrome.tabs.sendMessage(tabs[0].id, {
             volumeBoost: true,
             volumeBoostLevel: level
+          }, (response) => {
+            if (chrome.runtime.lastError) {
+              console.log('Message not received:', chrome.runtime.lastError.message);
+            }
           });
         }
       });

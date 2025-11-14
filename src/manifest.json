@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "MRGARGSIR Tools",
-  "version": "4.7.0",
-  "description": "Adds utility bookmarks for HEWP workflow automation",
+  "name": "HEWP Extension Tool – Third-Party Utility",
+  "version": "26.0.0",
+  "description": "Adds utility bookmarks for HEWP (Unofficial) workflow automation. Not affiliated with HEWP or any government entity",
   "permissions": [
     "bookmarks",
     "tabs",
@@ -14,18 +14,21 @@
   "https://api.github.com/*",
   "<all_urls>"
   ],
-
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "background": { 
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "MRGARGSIR Tools"
+    "default_title": "HEWP Extension Tool – Third-Party Utility"
   },
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
-    "128": "icon128.png"
+    "128": "icon128.png",
+    "256": "icon256.png"
   },
   "content_scripts": [{
     "matches": ["<all_urls>"],

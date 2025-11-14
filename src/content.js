@@ -159,13 +159,19 @@ chrome.runtime.onMessage.addListener((message) => {
 });
 
 // Always check dark mode state on page load
-chrome.storage.local.get(['theme'], (result) => {
-  if (result.theme === 'dark') {
-    enableDarkReader();
-  } else {
-    disableDarkReader();
-  }
-});
+if (chrome.runtime?.id) {
+  chrome.storage.local.get(['theme'], (result) => {
+    if (chrome.runtime.lastError) {
+      console.log('Storage access error:', chrome.runtime.lastError);
+      return;
+    }
+    if (result.theme === 'dark') {
+      enableDarkReader();
+    } else {
+      disableDarkReader();
+    }
+  });
+}
 
 // Listen for history changes (for SPAs)
 let lastUrl = location.href;
@@ -194,13 +200,19 @@ chrome.storage.onChanged.addListener((changes, area) => {
 });
 
 // On page load, apply volume boost if enabled
-chrome.storage.local.get(['volumeBoost', 'volumeBoostLevel'], (result) => {
-  if (result.volumeBoost && typeof result.volumeBoostLevel === "number") {
-    enableVolumeBoost(result.volumeBoostLevel);
-  } else {
-    disableVolumeBoost();
-  }
-});
+if (chrome.runtime?.id) {
+  chrome.storage.local.get(['volumeBoost', 'volumeBoostLevel'], (result) => {
+    if (chrome.runtime.lastError) {
+      console.log('Storage access error:', chrome.runtime.lastError);
+      return;
+    }
+    if (result.volumeBoost && typeof result.volumeBoostLevel === "number") {
+      enableVolumeBoost(result.volumeBoostLevel);
+    } else {
+      disableVolumeBoost();
+    }
+  });
+}
 
 function attachFixEnterHandler(enabled) {
   document.querySelectorAll('#txthsrno').forEach(hsrInput => {
@@ -218,15 +230,31 @@ function attachFixEnterHandler(enabled) {
   });
 }
 
-chrome.storage.local.get(['fixEnterEnabled'], (result) => {
-  attachFixEnterHandler(!!result.fixEnterEnabled);
-});
+// Check if extension context is valid before accessing chrome.storage
+if (chrome.runtime?.id) {
+  chrome.storage.local.get(['fixEnterEnabled'], (result) => {
+    if (chrome.runtime.lastError) {
+      console.log('Storage access error:', chrome.runtime.lastError);
+      return;
+    }
+    attachFixEnterHandler(!!result.fixEnterEnabled);
+  });
+} else {
+  console.log('Extension context invalidated. Please reload the page.');
+}
+
+//chrome.storage.local.get(['fixEnterEnabled'], (result) => {
+//  attachFixEnterHandler(!!result.fixEnterEnabled);
+//});
 
 chrome.storage.onChanged.addListener((changes, area) => {
+  if (!chrome.runtime?.id) return; // Exit if context invalidated
+  
   if (area === 'local' && changes.fixEnterEnabled) {
     attachFixEnterHandler(changes.fixEnterEnabled.newValue);
   }
 });
+
 
 const observer = new MutationObserver(() => {
   chrome.storage.local.get(['fixEnterEnabled'], (result) => {

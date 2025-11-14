@@ -42,6 +42,85 @@ chrome.runtime.onInstalled.addListener(() => {
   ];
 
   
+  // Add at the very end of background.js
+
+// ============================================
+// MESSAGE HANDLER - Prevents connection errors
+// ============================================
+
+// Handle messages from popup and content scripts
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // Always respond to prevent "receiving end does not exist" error
+  
+  if (message.action === 'ping') {
+    sendResponse({ status: 'alive' });
+    return true;
+  }
+  
+  if (message.volumeBoost !== undefined) {
+    // Forward volume boost messages to content script
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
+          if (chrome.runtime.lastError) {
+            console.log('Content script not ready:', chrome.runtime.lastError.message);
+          }
+        });
+      }
+    });
+    sendResponse({ received: true });
+    return true;
+  }
+  
+  // Echo back any other messages
+  sendResponse({ received: true, message: 'Background script received message' });
+  return true; // Keep channel open for async response
+});
+
+// Auto-reload content scripts when extension updates
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'update' || details.reason === 'install') {
+    console.log('Extension updated/installed - reloading tabs');
+    
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        // Skip chrome:// and extension pages
+        if (tab.url && !tab.url.startsWith('chrome://') && !tab.url.startsWith('chrome-extension://')) {
+          chrome.tabs.reload(tab.id).catch((error) => {
+            console.log(`Could not reload tab ${tab.id}:`, error);
+          });
+        }
+      });
+    });
+  }
+});
+
+// Keep service worker alive (Manifest V3)
+let keepAliveInterval;
+
+function keepAlive() {
+  if (keepAliveInterval) return;
+  
+  keepAliveInterval = setInterval(() => {
+    chrome.runtime.getPlatformInfo(() => {
+      // This keeps the service worker active
+    });
+  }, 20000); // Every 20 seconds
+}
+
+// Start keep-alive when service worker starts
+keepAlive();
+
+// Restart keep-alive on message
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  keepAlive();
+});
+
+console.log('HEWP Extension background service worker loaded');
+
+// ============================================
+// BOOKMARK MANAGEMENT
+// ============================================
  
  chrome.bookmarks.getChildren("1", (existingBookmarks) => {
     const titlesToRemove = bookmarksToAdd.map(b => b.title);

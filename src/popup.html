@@ -3,323 +3,265 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Extension Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <title>HEWP Extension Tool</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     * {
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-      transition: background 0.3s ease, color 0.3s ease;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      min-width: 320px;
-      max-width: 400px;
-      width: 350px;
-      /* Remove height! */
+      font-family: 'Poppins', sans-serif;
+      width: 380px;
+      min-height: 500px;
+      max-height: 600px;
+      overflow-y: auto;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     body.light {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #ffffff;
     }
 
     body.dark {
-      background: linear-gradient(135deg, #1e1e2f, #101018);
-      color: #ffffff;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #e4e4e4;
     }
 
-    .name {
-      width: 100%;
-      text-align: center; /* Center the text */
-      margin: 0;
-      padding: 18px 0 0 0;
-      position: fixed;
-      top: -10px;
-      left: 0;
-      z-index: 200;
-      background: transparent;
-      pointer-events: none;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .name h1 {
-      font-size: 20px;
-      margin: 0;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: #fff;
-      text-shadow: 0 2px 8px #0004;
-      pointer-events: auto;
-    }
-
-    .container,
-    .toggler-container {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(15px);
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    /* Header */
+    .header {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
       text-align: center;
-      width: 90%;
-      max-width: 370px;
-      min-width: 260px;
-      position: relative;
-      margin-top: 45px;
-      margin-bottom: 56px;
-      margin-left: auto;
-      margin-right: auto;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    h1 {
-      font-size: 20px;
-      margin-bottom: 6px;
-      margin-top: -6px;
+    .header h1 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      margin: 0;
     }
-    
+
+    /* Main Container */
+    .container {
+      padding: 16px 16px;
+      flex: 1;
+    }
+
+    /* Button Container */
     .button-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
+    /* Button Base Styles */
     button {
       border: none;
-      color: white;
-      font-weight: 700;
-      padding: 8px 14px;
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 18px;
+      border-radius: 15px;
       cursor: pointer;
-      font-size: 13px;
-      box-shadow: 0 0 5px rgba(0, 198, 255, 0.7),
-                  0 0 10px rgba(0, 114, 255, 0.6),
-                  0 0 20px rgba(0, 198, 255, 0.5);
-      transition: all 0.5s ease;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       position: relative;
       overflow: hidden;
-      border-radius: 22px;
-      user-select: none;
-    }
-
-    button::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.3), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      pointer-events: none;
-      border-radius: 20px;
-      z-index: 0;
-    }
-
-    button:hover::before {
-      opacity: 1;
-      animation: shine 2s infinite;
-    }
-
-    @keyframes shine {
-      0% { transform: rotate(0deg) translateX(-100%); }
-      100% { transform: rotate(360deg) translateX(100%); }
     }
 
     button:hover {
-      background-position: 100% 50%;
-      box-shadow: 0 0 15px rgba(255, 65, 108, 0.9),
-                  0 0 30px rgba(255, 75, 43, 0.8),
-                  0 0 40px rgba(255, 65, 108, 0.7);
-      transform: scale(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
 
     button:active {
-      transform: scale(0.95);
+      transform: translateY(0);
+    }
+
+    button:focus {
+      outline: 3px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 2px;
     }
 
     button svg {
       width: 20px;
       height: 20px;
       fill: currentColor;
-      transition: transform 0.3s ease;
       flex-shrink: 0;
     }
 
-    button:hover svg {
-      transform: translateY(-3px) scale(1.2);
-    }
-
-    #status {
-      margin-top: 1px;
-      min-height: 1px;
-      font-weight: 600;
-      font-size: 8px;
-      color: #ffeb3b;
-    }
-    .footer {
-      margin-top: 0px;
-      font-size: 12px;
-      padding-bottom: 0;
-    } 
-    /* Specific buttons styling & colors */
-
+    /* Individual Button Colors */
     #reloadBtn {
-      background: linear-gradient(270deg, #007acc, #004c99, #007acc);
-      box-shadow: 0 0 12px #007acccc, 0 0 25px #004c99cc;
-      border-radius: 30px;
+      background: linear-gradient(135deg, #0084ff 0%, #0056b3 100%);
     }
 
     #openNewTabBtn {
-      background: linear-gradient(270deg, #4caf50, #2e7d32, #4caf50);
-      box-shadow: 0 0 12px #4caf50cc, 0 0 25px #2e7d32cc;
-      border-radius: 30px;
+      background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
     }
 
-  
     #hsrBtn {
-      background: linear-gradient(270deg, #2196f3, #1565c0, #2196f3);
-      box-shadow: 0 0 12px #2196f3cc, 0 0 25px #1565c0cc;
-      border-radius: 30px;
+      background: linear-gradient(135deg, #2196f3 0%, #1565c0 100%);
     }
 
-    /* Coffee cup style for Donate button */
     #donateBtn {
-      background: linear-gradient(90deg, #6f4e37, #3e2c1c);
-      box-shadow: 0 0 15px #6f4e37cc, 0 0 30px #3e2c1ccc;
-      border-radius: 40px 20px 40px 20px; /* irregular pill shape */
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
       font-weight: 700;
-      color: #fff8dc;
-      padding-left: 26px;
-      padding-right: 26px;
-      position: relative;
-    }
-    #donateBtn svg {
-      width: 24px;
-      height: 24px;
-      margin-right: 10px;
-      fill: #fff8dc;
     }
 
     #requestFeatureBtn {
-      background: linear-gradient(270deg, #ffb347, #ffcc33, #ffb347);
-      box-shadow: 0 0 12px #ffb347cc, 0 0 25px #ffcc33cc;
-      font-weight: 800;
-      color: #4a2c00;
-      border-radius: 30px;
+      background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);
+      color: #2c1810;
+    }
+
+    /* Status Messages */
+    #status {
+      padding: 1px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      margin: 5px 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: rgba(255, 235, 59, 0.2);
+      color: #ffd700;
+    }
+
+    #status.visible {
+      opacity: 1;
+    }
+
+    #statusext {
+      font-size: 11px;
+      font-weight: 500;
+      opacity: 0.9;
     }
 
     /* QR Section */
     #qrSection {
       display: none;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      margin-top: 15px;
+      text-align: center;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      margin-top: 16px;
+      animation: slideIn 0.3s ease;
     }
 
     #qrSection.visible {
       display: block;
-      opacity: 1;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     #qrSection img {
       background: white;
-      padding: 8px;
+      padding: 10px;
       border-radius: 10px;
       max-width: 200px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
 
     #qrSection a {
-      color: #007bff;
+      color: #4fc3f7;
       font-size: 14px;
       text-decoration: none;
-      margin-top: 6px;
+      font-weight: 600;
       display: inline-block;
+      margin-top: 8px;
+    }
+
+    #qrSection a:hover {
+      text-decoration: underline;
     }
 
     #upiId {
-      margin-top: 6px;
-      font-size: 14px;
-      color: #ddd;
+      margin-top: 5px;
+      font-size: 13px;
+      color: #e0e0e0;
+      font-weight: 500;
     }
 
     #copyUPI {
-      background-color: #ffe066;
+      background: #ffeb3b;
+      color: #2c1810;
       border: none;
-      padding: 8px 12px;
-      margin-top: 10px;
+      padding: 10px 20px;
+      margin-top: 12px;
       border-radius: 8px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
-      color: #4a2c00;
-      box-shadow: 0 0 5px rgba(255, 224, 102, 0.8);
-      transition: background-color 0.3s ease;
+      font-size: 13px;
+      transition: all 0.3s ease;
     }
 
     #copyUPI:hover {
-      background-color: #ffdd55;
+      background: #fdd835;
+      transform: scale(1.05);
     }
 
-    /* Slider Toggle */
-    .toggle-container {
-      margin-top: 16px;
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
+    /* Toggle Container */
+    .toggler-container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 5px;
+      margin-top: 8px;
     }
 
     .toggle-container-horizontal {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
-      justify-content: center;
-      margin-top: 8px;
-      margin-bottom: 6px;
-    }
-
-    .toggle-container-horizontal .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .toggle-container-vertical {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
+      margin-bottom: 2px;
     }
 
     .toggle-row {
       display: flex;
-      align-items: center;
-      gap: 6px;
+      flex-direction: column;
+      gap: 2px;
     }
 
     .toggle-label {
-      min-width: 70px;
       font-weight: 600;
-      font-size: 13px;
+      font-size: 12px;
+      text-align: center;
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 46px;
-      height: 24px;
+      width: 50px;
+      height: 26px;
+      margin: 0 auto;
     }
 
     .switch input {
@@ -331,22 +273,26 @@
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: 0.4s;
-      border-radius: 30px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.3);
+      transition: 0.3s;
+      border-radius: 26px;
     }
 
     .slider:before {
       position: absolute;
       content: "";
-      height: 18px;
-      width: 18px;
+      height: 20px;
+      width: 20px;
       left: 3px;
       bottom: 3px;
       background-color: white;
-      transition: 0.4s;
+      transition: 0.3s;
       border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     input:checked + .slider {
@@ -354,137 +300,179 @@
     }
 
     input:checked + .slider:before {
-      transform: translateX(22px);
+      transform: translateX(24px);
     }
 
-    .switch:hover .slider {
-      box-shadow: 0 0 8px #2196f3, 0 0 2px #fff;
-      background-color: #42a5f5;
-      transition: box-shadow 0.2s, background 0.2s;
-    }
-    .switch input:focus + .slider {
-      outline: 2px solid #42a5f5;
+    input:focus + .slider {
+      box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
     }
 
-    /* Move installed version to bottom, outside of main container padding */
-    #installed-version {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 2px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: #0fd512;
-      background: transparent;
-      z-index: 100;
-      padding-bottom: 2px;
-      pointer-events: none;
-    }
-    #installed-version a {
-      color: #0fd512 !important;
-      pointer-events: auto;
-    }
-    .footer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 28px;
-      text-align: center;
-      background: transparent;
-      z-index: 100;
-      font-size: 13px;
-      font-weight: 700;
-      color: #fffacd;
-      pointer-events: auto;
-    }
-    #status {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 45px;
-      
-      text-align: center;
-      font-size: 16px;
-      font-weight: 600;
-      color: #ffeb3b;
-      z-index: 101;
-      background: transparent;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-    #status.visible {
-      opacity: 1;
-    }
-
-    .toggler-container {
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(5px);
-      border-radius: 20px;
-      padding: 2px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
-      text-align: center;
-      width: auto;
-      position: relative;
-      margin-top: 12px;
-      margin-bottom: -10px;
-      margin-left: -10px;
-      margin-right: -10px;
+    /* Volume Booster Section */
+    .toggle-container-vertical {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      gap: 4px;
+    }
+
+    #volumeBoostSliderContainer {
+      display: none;
+      width: 100%;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    #volumeBoostSlider {
+      width: 80%;
+      height: 6px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    #volumeBoostSlider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2196f3;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    #volumeBoostSlider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #2196f3;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      border: none;
+    }
+
+    #volumeBoostValue {
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    /* Footer */
+    .footer {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 5px 16px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .footer a {
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .installed-version {
+      font-size: 14px;
+      margin-top: 2px;
+      opacity: 0.8;
+    }
+
+    .installed-version a {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    .disclaimer {
+      font-size: 10px;
+      margin-top: 2px;
+      color: #ffb74d;
+    }
+
+    .disclaimer a {
+      color: #ffb74d;
+      text-decoration: none;
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Scrollbar styling */
+    body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+    }
+
+    body::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.5);
     }
   </style>
 </head>
 <body class="light">
-  <div class="name">
-    <h1>🚀HEWP Tool Extension</h1>
+  <div class="header">
+    <h1>🚀 HEWP Extension Tool – Third-Party Utility</h1>
   </div>
+
   <div class="container">
-    
     <div class="button-container">
-
-      <button id="reloadBtn" title="Reload extension">
-        <!-- Reload Icon -->
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>
-        Reload
+      <button id="reloadBtn" aria-label="Reload extension">
+        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>
+        Reload Extension
       </button>
 
-      <button id="openNewTabBtn" title="Download Latest Extension">
-        <!-- Link/Release Icon -->
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.59 13.41L9.17 14.83a4 4 0 0 1 5.66 0l1.41-1.41a6 6 0 0 0-8.48 0l-3 3a6 6 0 0 0 8.48 8.48l1.41-1.41a4 4 0 0 1-5.66 0l-1.42-1.42"/></svg>
-        <div id="versionext">Chrome Extension Latest</div> <br> <div id="statusext"></div>
+      <button id="openNewTabBtn" aria-label="Download latest Chrome extension">
+        <svg viewBox="0 0 24 24"><path d="M10.59 13.41L9.17 14.83a4 4 0 0 1 5.66 0l1.41-1.41a6 6 0 0 0-8.48 0l-3 3a6 6 0 0 0 8.48 8.48l1.41-1.41a4 4 0 0 1-5.66 0l-1.42-1.42"/></svg>
+        <div>
+          <div>Chrome Extension Latest</div>
+          <div id="statusext"></div>
+        </div>
       </button>
 
-
-      <button id="hsrBtn" title="Subscribe Aratt ai Channel">
-        <!-- File Icon -->
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 3h6v6H3V3m8 0h6v6h-6V3m8 0h6v6h-6V3M3 11h6v6H3v-6m8 0h6v6h-6v-6m8 0h6v6h-6v-6M3 19h6v6H3v-6m8 0h6v6h-6v-6m8 0h6v6h-6v-6z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <button id="hsrBtn" aria-label="Subscribe to Aratt AI channel">
+        <svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
         Official Channel
       </button>
 
-      <button id="donateBtn" title="❤️ Buy me a Coffee">
-        <!-- Coffee Cup Icon -->
-        <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M44 44a12 12 0 1 1-24 0v-8H44zM32 10a10 10 0 0 1 10 10h-4a6 6 0 1 0-6 6h14a6 6 0 0 1 0 12H18v4a6 6 0 0 0 12 0"/></svg>
+      <button id="donateBtn" aria-label="Buy me a coffee">
+        <svg viewBox="0 0 24 24"><path d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.9 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"/></svg>
         Buy me a Coffee ❤️
       </button>
 
-      <button id="requestFeatureBtn" title="💡 Request a Feature">
-        <!-- Lightbulb Icon -->
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 21h6m-3-1v-4a3 3 0 0 1 3-3h0a3 3 0 0 1 3 3v4m-6 0h6"/></svg>
+      <button id="requestFeatureBtn" aria-label="Request a new feature">
+        <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
         Request a Feature 💡
       </button>
-
     </div>
 
-    <div id="qrSection">
-      <img src="qr.png" alt="❤️ Buy me a Coffee" />
+    <div id="status" role="status" aria-live="polite"></div>
+
+    <div id="qrSection" aria-hidden="true">
+      <img src="qr.png" alt="UPI payment QR code" />
       <p>Scan or click below to donate</p>
-      <a href="https://tinyurl.com/UPI-mrgargsir" target="_blank">UPI Link</a>
+      <a href="https://tinyurl.com/UPI-mrgargsir" target="_blank" rel="noopener noreferrer">UPI Payment Link</a>
       <div id="upiId">UPI ID: mrgargsir@ybl</div>
-      <button id="copyUPI">Copy UPI ID</button>
+      <button id="copyUPI" aria-label="Copy UPI ID to clipboard">Copy UPI ID</button>
     </div>
 
     <div class="toggler-container">
@@ -492,49 +480,45 @@
         <div class="toggle-row">
           <label for="darkModeToggle" class="toggle-label">Dark Mode</label>
           <label class="switch">
-            <input type="checkbox" id="darkModeToggle" />
+            <input type="checkbox" id="darkModeToggle" aria-label="Toggle dark mode" />
             <span class="slider"></span>
           </label>
         </div>
         <div class="toggle-row">
           <label for="fixEnterToggle" class="toggle-label">Fix Enter Button</label>
           <label class="switch">
-            <input type="checkbox" id="fixEnterToggle" />
+            <input type="checkbox" id="fixEnterToggle" aria-label="Toggle fix enter button" />
             <span class="slider"></span>
           </label>
         </div>
       </div>
+
       <div class="toggle-container-vertical">
         <div class="toggle-row">
           <label for="volumeBoosterToggle" class="toggle-label">Volume Booster</label>
           <label class="switch">
-            <input type="checkbox" id="volumeBoosterToggle" />
+            <input type="checkbox" id="volumeBoosterToggle" aria-label="Toggle volume booster" />
             <span class="slider"></span>
           </label>
         </div>
-        <div id="volumeBoostSliderContainer" style="display:none; margin-top:4px; text-align:center;">
-          <input type="range" id="volumeBoostSlider" min="0" max="200" value="100" style="vertical-align: middle;">
-          <span id="volumeBoostValue" style="margin-left:6px;">100%</span>
+        <div id="volumeBoostSliderContainer">
+          <input type="range" id="volumeBoostSlider" min="0" max="200" value="100" aria-label="Volume boost percentage" />
+          <span id="volumeBoostValue">100%</span>
         </div>
       </div>
     </div>
-    <!-- Place the slider on a new line below the toggle-container -->
-    
   </div>
-  <script src="popup.js">
-  </script>
-  <!-- Place this just before </body> -->
- <div id="status"></div>
-<div class="footer" style="font-weight: 700; font-size: 13px;">
-  Made with ❤️ by 
-  <a href="https://github.com/mrgargsir" target="_blank" style="color: #fffacd; font-weight: 800; text-decoration: none; font-style: italic;">
-    @mrgargsir
-  </a>
-</div>
-<div id="installed-version">
-  <a href="https://github.com/mrgargsir/HEWPContractorextension/releases/latest" target="_blank" style="color: #0fd512; font-weight: 600; text-decoration: black; font-style: italic;">
-    Installed version 4.7.0
-  </a>
-</div>
+
+  <div class="footer">
+    <div>Made with ❤️ by <a href="https://github.com/mrgargsir" target="_blank" rel="noopener noreferrer">@mrgargsir</a></div>
+    <div class="installed-version">
+      <a href="https://github.com/mrgargsir/HEWPContractorextension/releases/latest" target="_blank" rel="noopener noreferrer">Installed version 26.0.0</a>
+    </div>
+    <div class="disclaimer">
+      <a href="https://github.com/mrgargsir/HEWPContractorextension/releases/latest" target="_blank" rel="noopener noreferrer">This extension is a third-party helper tool. <br/>
+      It is NOT an official HEWP extension.</a>
+    </div>
+  </div>
+  <script src="popup.js"></script>
 </body>
 </html>
