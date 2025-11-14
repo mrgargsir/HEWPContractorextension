@@ -1,4 +1,22 @@
-# HEWPextension
+# HEWP Extension Tool – Third-Party Utility
+
+================================================================================
+                    END USER LICENSE AGREEMENT (EULA)
+                         For MRGARGSIR Tools
+                         Version 26.0.0 and Above
+================================================================================
+
+IMPORTANT DISCLAIMER:
+
+This is an independent third-party tool and is NOT affiliated with, endorsed 
+by, or connected to the HEWP portal or any government department. 
+
+USE AT YOUR OWN RISK.
+
+================================================================================
+
+This software is provided by MRGARGSIR.
+
 
 HEWP (Haryana Engineering Works Portal) SHORTCUTS AND SEARCH BAR ITEM NO. , TENDER, AUTO FILL ITEM BUTTONS AS BOOKMARK
 
