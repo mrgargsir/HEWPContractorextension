@@ -1,7 +1,7 @@
 chrome.runtime.onInstalled.addListener(() => {
   const bookmarksToAdd = [
     
-    { title: "HEWP Tools", url: "https://hewptools.github.io" },
+    { title: "HEWP Tools", url: "https://mrgargsir.github.io/HEWP-Excel-Addins/" },
 
     { title: "☑️Toggle", url: "javascript:(function(){const checkboxes=document.querySelectorAll('input[type=\"checkbox\"]');if(checkboxes.length===0)return;const allChecked=Array.from(checkboxes).every(cb=>cb.checked);checkboxes.forEach(checkbox=>{checkbox.checked=!allChecked;checkbox.dispatchEvent(new Event('change',{bubbles:true}));checkbox.dispatchEvent(new Event('click',{bubbles:true}));});})();" },
 

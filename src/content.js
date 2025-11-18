@@ -153,9 +153,7 @@ if (chrome.runtime?.id) {
   console.log('Extension context invalidated. Please reload the page.');
 }
 
-//chrome.storage.local.get(['fixEnterEnabled'], (result) => {
-//  attachFixEnterHandler(!!result.fixEnterEnabled);
-//});
+
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (!chrome.runtime?.id) return; // Exit if context invalidated

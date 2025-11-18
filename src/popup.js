@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('hsrBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: 'https://hewptools.github.io' });
+    chrome.tabs.create({ url: 'https://mrgargsir.github.io/HEWP-Excel-Addins/' });
     setStatus('CHANNEL OPENED');
   });
 
