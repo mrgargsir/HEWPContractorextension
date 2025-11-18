@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HEWP Extension Tool – Third-Party Utility",
-  "version": "26.0.0",
+  "version": "26.1.0",
   "description": "Adds utility bookmarks for HEWP (Unofficial) workflow automation. Not affiliated with HEWP or any government entity",
   "permissions": [
     "bookmarks",

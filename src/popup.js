@@ -3,26 +3,26 @@ document.addEventListener('DOMContentLoaded', () => {
   let latestZipUrl = ''; // Store ZIP download URL
 
   // Fetch latest release once
-  fetch('https://api.github.com/repos/mrgargsir/HEWPContractorextension/releases/latest')
+  fetch('https://api.github.com/repos/mrgargsir/HEWP-Excel-Addins/releases/latest')
     .then(response => response.json())
     .then(data => {
       const version = data.tag_name;
       const versionEl = document.getElementById('versionext');
       const downloadEl = document.getElementById('downloadext');
 
-      if (versionEl) versionEl.textContent = `Chrome Extension Latest Version: ${version}`;
+      if (versionEl) versionEl.textContent = `HEWP Tools Online Installer`;
 
       const zipAsset = data.assets.find(asset =>
-        asset.name.endsWith('.zip')
+        asset.name.endsWith('.exe')
       );
 
       if (zipAsset) {
         latestZipUrl = zipAsset.browser_download_url;
         if (downloadEl) {
-          downloadEl.innerHTML = `<a href="${latestZipUrl}" target="_blank">Download Extension ZIP</a>`;
+          downloadEl.innerHTML = `<a href="${latestZipUrl}" target="_blank">Download Online Installer</a>`;
         }
       } else {
-        if (downloadEl) downloadEl.textContent = 'ZIP not found in release assets.';
+        if (downloadEl) downloadEl.textContent = 'Online Installer not found.';
       }
     })
     .catch(error => {
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        setStatus('Downloading extension ZIP...');
+        setStatus('Downloading Online Installer...');
       } else {
         setStatus('Download link not ready. Try again shortly.');
       }
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('hsrBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: 'https://aratt.ai/@mrgargsir_tools' });
+    chrome.tabs.create({ url: 'https://hewptools.github.io' });
     setStatus('CHANNEL OPENED');
   });
 
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('requestFeatureBtn').addEventListener('click', () => {
     jumpButtonTwice('requestFeatureBtn', () => {
-      const subject = encodeURIComponent('Feature Request for HEWP Extension');
+      const subject = encodeURIComponent('Feature Request for HEWP Tools');
       const body = encodeURIComponent(
         'Hi,\n\nI would like to request the following feature:\n\n[Please describe your feature here]\n\nThanks!'
       );

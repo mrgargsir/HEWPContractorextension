@@ -1,70 +1,4 @@
-// Enhanced content.js (compatible with your existing message format)
-// const darkModeStyles = `
-//   html, body, div, section, main, header, footer, nav, aside, article {
-//     background-color: #181824 !important;
-//     color: #e0e0e0 !important;
-//     border-color: #333 !important;
-//   }
-//   body {
-//     background: #181824 !important;
-//     color: #e0e0e0 !important;
-//   }
-//   a, a *, .nav-link, .dropdown-menu a {
-//     color: #bb86fc !important;
-//   }
-//   input, textarea, select, button, .form-control, .form-select {
-//     background-color: #232336 !important;
-//     color: #e0e0e0 !important;
-//     border-color: #444 !important;
-//   }
-//   table, th, td, .table, .table th, .table td {
-//     background-color: #232336 !important;
-//     color: #e0e0e0 !important;
-//     border-color: #333 !important;
-//   }
-//   .bg-light, .bg-white, .bg-light-purp, .bg-light-blue, .bg-light-green, .bg-light-yellow, .bg-light-pink {
-//     background-color: #232336 !important;
-//     color: #e0e0e0 !important;
-//   }
-//   .card, .panel, .container, .box, .content, .modal-content, .dropdown-menu, .collapse, .submenu, .cust-table, .first-row-fix-table {
-//     background-color: #232336 !important;
-//     color: #e0e0e0 !important;
-//     border-color: #333 !important;
-//   }
-//   .theme-btn--blue, .theme-btn--orange, .theme-btn--red, .btn, .btn-info, .btn-primary, .btn-success, .btn-warning, .btn-danger {
-//     background-color: #333c5a !important;
-//     color: #fff !important;
-//     border-color: #444 !important;
-//   }
-//   .theme-btn--blue:hover, .theme-btn--orange:hover, .theme-btn--red:hover, .btn:hover {
-//     background-color: #444c6a !important;
-//     color: #fff !important;
-//   }
-//   .modal-header, .modal-footer {
-//     background-color: #232336 !important;
-//     color: #e0e0e0 !important;
-//     border-color: #333 !important;
-//   }
-//   .dropdown-menu {
-//     background-color: #232336 !important;
-//     color: #e0e0e0 !important;
-//   }
-//   .form-control[readonly], .form-control[disabled] {
-//     background-color: #232336 !important;
-//     color: #b0b0b0 !important;
-//   }
-//   ::placeholder {
-//     color: #b0b0b0 !important;
-//     opacity: 1 !important;
-//   }
-//   hr {
-//     border-color: #333 !important;
-//   }
-//   /* Remove box-shadows that may look odd in dark mode */
-//   *, *:before, *:after {
-//     box-shadow: none !important;
-//   }
-// `;
+// Function to enable Dark Reader
 
 function enableDarkReader() {
   if (window.DarkReader) {
@@ -112,31 +46,7 @@ function disableVolumeBoost() {
   });
 }
 
-// // Listen for toggle all checkboxes message from popup
-// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-//   if (message.action === 'toggleAllCheckboxes') {
-//     // Get all checkboxes on the webpage
-//     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-//     // Determine if all are currently checked
-//     const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-    
-//     // Toggle each checkbox
-//     checkboxes.forEach(checkbox => {
-//       checkbox.checked = !allChecked;
-      
-//       // Trigger change and click events
-//       checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-//       checkbox.dispatchEvent(new Event('click', { bubbles: true }));
-//     });
-    
-//     // Send response back to popup
-//     sendResponse({ 
-//       success: true, 
-//       toggled: checkboxes.length 
-//     });
-//   }
-// });
+
 
 
 // Listen for popup messages
