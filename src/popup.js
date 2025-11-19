@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Get version from manifest
+  const manifest = chrome.runtime.getManifest();
+  const installedVersion = manifest.version;
+  
+  // Update installed version in footer
+  const installedVersionElement = document.querySelector('.installed-version a');
+  if (installedVersionElement) {
+    installedVersionElement.textContent = `Installed version ${installedVersion}`;
+  }
   // Fetch latest version from GitHub releases
   let latestZipUrl = ''; // Store ZIP download URL
 
@@ -226,4 +235,91 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.set({ fixEnterEnabled: fixEnterToggle.checked });
     setStatus(fixEnterToggle.checked ? 'Fix Enter is ON' : 'Fix Enter is OFF');
   });
+
+// Auto Add Bookmarks Toggle
+const bookmarksToggle = document.getElementById('bookmarksToggle');
+const bookmarkPositionSection = document.getElementById('bookmarkPositionSection');
+const positionLeft = document.getElementById('positionLeft');
+const positionRight = document.getElementById('positionRight');
+
+// Initialize from storage
+chrome.storage.local.get(['bookmarksEnabled', 'bookmarkPosition'], (result) => {
+    bookmarksToggle.checked = !!result.bookmarksEnabled;
+
+    // Only show position section if bookmarks are enabled AND position is selected
+    const position = result.bookmarkPosition;
+    if (result.bookmarksEnabled && position) {
+      bookmarkPositionSection.style.display = 'block';
+      if (position === 'left') {
+        positionLeft.checked = true;
+      } else {
+        positionRight.checked = true;
+      }
+    } else {
+      bookmarkPositionSection.style.display = 'none';
+      // Clear any selection when initializing
+      positionLeft.checked = false;
+      positionRight.checked = false;
+    }
+  });
+
+// Toggle bookmarks on/off
+  bookmarksToggle.addEventListener('change', () => {
+    const enabled = bookmarksToggle.checked;
+    
+    if (enabled) {
+      // Show position selection but don't add bookmarks yet
+      bookmarkPositionSection.style.display = 'block';
+      setStatus('Please select bookmark position');
+      
+      // Clear storage until position is selected
+      chrome.storage.local.set({ bookmarksEnabled: false });
+    } else {
+      // Hide position selection and remove bookmarks
+      bookmarkPositionSection.style.display = 'none';
+      chrome.storage.local.set({ bookmarksEnabled: false });
+      
+      // Remove bookmarks
+      chrome.runtime.sendMessage({
+        action: 'manageBookmarks',
+        enable: false,
+        position: 'left'
+      }, (response) => {
+        if (response && response.success) {
+          setStatus('Bookmarks removed');
+        }
+      });
+      
+      // Clear position selection
+      positionLeft.checked = false;
+      positionRight.checked = false;
+    }
+  });
+
+  // When position is selected, add bookmarks
+  function handlePositionChange() {
+    if (!bookmarksToggle.checked) return;
+    
+    const position = positionLeft.checked ? 'left' : 'right';
+    
+    // Now set bookmarks as enabled and add them
+    chrome.storage.local.set({ 
+        bookmarksEnabled: true, 
+        bookmarkPosition: position 
+    });
+    
+    // Add bookmarks at selected position
+    chrome.runtime.sendMessage({
+        action: 'manageBookmarks',
+        enable: true,
+        position: position
+    }, (response) => {
+        if (response && response.success) {
+            setStatus(`Bookmarks added at Top ${position === 'left' ? 'Left' : 'Right'}`);
+        }
+    });
+  }
+
+  positionLeft.addEventListener('change', handlePositionChange);
+  positionRight.addEventListener('change', handlePositionChange);
 });
