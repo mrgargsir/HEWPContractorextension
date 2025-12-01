@@ -1,4 +1,4 @@
-# HEWP Tools (Excel ADDins and Chrome Extension) by mrgargsir
+# Estimation & Billing Tools (HEWP Tools) (Excel ADDins and Chrome Extension) by mrgargsir
 Disclaimer: We are not an official HEWP and are not authorized by the Government in any way.
 
 Haryana Engineering Works Portal 
@@ -6,14 +6,14 @@ HEWP ESTIMATE, MEASUREMENT BOOK TEMPLATE, HSR 2023 WITH LATEST AMENDMENTS, REAL 
 
 ## 📦 Download
 
-Check for Updated HEWP Tools Utility Available : [Click here for Latest Version](https://mrgargsir.github.io/HEWP-Excel-Addins/)
+Check for Updated Estimation & Billing Tools (HEWP Tools) Utility Available : [Click here for Latest Version](https://mrgargsir.github.io/HEWP-Excel-Addins/)
 
 # New installer
 Download and install onlineinstaller.exe, then follow the on-screen instructions. 
 
 ---
 
-# 1. 🧩 HEWP Excel ADDins – Complete Toolkit for Haryana Engineering Works Portal (HEWP) by mrgargsir
+# 1. 🧩 Estimation & Billing Tools (HEWP Tools) Excel ADDins – Complete Toolkit for Estimation & Billing & Haryana Engineering Works Portal (HEWP) by mrgargsir
 
 **HEWPExcelADDins** is an all-in-one **Excel Add-In**  designed to streamline work on the **Haryana Engineering Works Portal (HEWP)**. It brings powerful automation, smart templates, and web shortcuts—making the workflow seamless for both **Contractors** and **Employees**.
 
@@ -57,7 +57,7 @@ Download and install onlineinstaller.exe, then follow the on-screen instructions
 
 ---
 
-### #### 🌐 Web Automation Features (Second Tab: **`Web`**)
+### #### 🌐 Web Automation Features (Second Tab: **`WebAuto`**)
 
 **📤 One-Click Uploader** – Interact directly with the HEWP Portal from Excel.
 
@@ -132,3 +132,5 @@ Email: advancetool.help@zohomail.in
 Get Updates: https://mrgargsir.github.io/HEWP-Excel-Addins/
 
 **Thank you for using MRGARGSIR Tools!** 🚀
+
+HEWP Excel Addins, HEWP tools, Excel addins, HEWP tutorials, HEWP WhatsApp, HEWP YouTube, Estimate, Estimation, billing, bill, boq, tools, mrgargsir, tool by mrgargsir, tools by mrgargsir, estimates, excel addins, Add-ins, construction estimation software, building cost estimator, quantity surveyor tools, construction billing software, BOQ preparation tool, material estimation, construction project management, Excel automation tools, estimating software India, construction calculator Excel, rate analysis tool, construction costing software, building estimation tool, contractor billing software, civil engineering Excel tools, construction takeoff software, budget estimation tool, construction management Excel, project costing software, residential estimation, commercial estimation, construction quote generator, measurement sheet tool, cost analysis Excel addin, construction database tools, HSR database, QTY tracking, Excel VSTO addins, third party Excel tools, construction industry software, estimator tools, building quantity surveyor, construction documentation tools, Excel plugins for construction, automated estimation software, construction reporting tools.
