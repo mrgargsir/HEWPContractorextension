@@ -1,36 +1,52 @@
-# Estimation & Billing Tool (HEWP Tools) (BOQ Excel ADDins and Chrome Extension) by mrgargsir
-**Disclaimer:** This is an independent third-party tool NOT affiliated with, endorsed by, or connected to the HEWP portal or any government department. We are not an official HEWP and are not authorized by the Government in any way.
+# 🚀 Estimation & Billing Tool (MRGARGSIR HEWP Tools) (Excel Tool and Browser Extension) 
+**by MRGARGSIR**
 
-Haryana Engineering Works Portal 
-HEWP ESTIMATE, BOQ, MEASUREMENT BOOK TEMPLATE, HSR 2023 WITH LATEST AMENDMENTS, REAL TIME SEARCH ITEM NO., AUTO UNIT CONVERTER, RATE, RATE TYPE, UNIT FETCHER, AUTO DATA COPY PASTE TO TEMPLATE, AUTO INTELLIGENT DATA ARRANGED IN TEMPLATES WITH 0% ERROR CHANCE, TEMPLATE EXCEL UPLOADER TO PORTAL, CHROME BOOKMARKS LINK FOR SHORTCUTS ON WEBSITE - SAVE LOTS OF TIME, SEARCH BAR FOR HSR ITEM NUMBER AND SEARCH BAR FOR TENDER And All DropDown ON HEWP PORTAL via Chrome Extension, ONE CLICK INSTALLER. Available for Both CONTRACTOR AND EMPLOYEE LOGINS.
+<div align="center">
 
-## 🚀 Official Website & Download
-
-**📦 Official Website:** [https://mrgargsir.github.io/HEWP-Excel-Addins/](https://mrgargsir.github.io/HEWP-Excel-Addins/)
-
-**🎥 YouTube Channel:** [https://www.youtube.com/@HEWPTools](https://www.youtube.com/@HEWPTools)
-
-**📞 Support:** WhatsApp: +91 97285 32828 | Email: help@mrgargsir.store
-
-**🌐 Social Media:**
-- Facebook: [https://facebook.com/HEWPTools](https://facebook.com/HEWPTools)
-- Instagram: [https://instagram.com/HEWPTools](https://instagram.com/HEWPTools)
-- X (Twitter): [https://x.com/HEWPTools](https://x.com/HEWPTools)
-- WhatsApp Group: [https://chat.whatsapp.com/DEXKInfvpBd9cLwyaoq0sd](https://chat.whatsapp.com/DEXKInfvpBd9cLwyaoq0sd)
-- WhatsApp Channel: [https://whatsapp.com/channel/0029VbBYrvx47XeIXLM2PU3u](https://whatsapp.com/channel/0029VbBYrvx47XeIXLM2PU3u)
-
-## 📋 Overview
-
-Estimation & Billing Tool is a comprehensive automation toolkit designed specifically for the **Haryana Engineering Works Portal (HEWP)**. It combines **Excel Addins**, **Chrome/Edge Extension**, and **web automation** to streamline Estimate Preparation, Material Quantity (Consumption) Preparation, BOQ Preparation, and online HEWP work.
+[![Website](https://img.shields.io/badge/Website-Visit-blue?style=for-the-badge)](https://mrgargsir.github.io/HEWP-Excel-Addins/)
+[![YouTube](https://img.shields.io/badge/YouTube-Subscribe-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/@HEWPTools)
+[![WhatsApp](https://img.shields.io/badge/WhatsApp-Contact-green?style=for-the-badge&logo=whatsapp)](https://wa.me/919728532828)
 
 **Speed up Estimate Preparation by 90%** with built-in Templates, real-time HSR search, intelligent copy-paste to templates, one-click uploader, and free Chrome/Edge extension – designed for both Contractors and Employees.
 
-## ✨ Key Benefits
+</div>
 
-- **90% Time Saved** on estimation and billing tasks
-- **0% Alignment Errors** with intelligent data arrangement
-- **30+ Tools Included** in one comprehensive package
-- **3-in-1 Solution:** Offline Excel + Online Web + Chrome Tools (Portal Error Fixer)
+---
+
+## ⚠️ Important Disclaimer
+
+**This is an independent third-party tool NOT affiliated with, endorsed by, or connected to the HEWP portal or any government department. We are not an official HEWP and are not authorized by the Government in any way.**
+
+---
+## 📋 What is Estimation & Billing Tool (HEWP Tools)?
+
+Estimation & Billing Tool is a comprehensive automation Excel toolkit designed specifically for Engineer and Contractor works for Offline Tender and Online **Haryana Engineering Works Portal (HEWP)**. It combines **Excel Tool**, **Chrome/Edge Extension**, and **web automation** to streamline Estimate Preparation, Material Quantity (Consumption) Preparation, BOQ Preparation, and online HEWP work.
+
+## 📋 Tools will help you in many ways but Major Points are:
+
+1. **📊 Preparation of Estimates/Bills** - Create professional Estimates/Bills with HSR 2023 rates and latest amendments
+2. **🧱 Preparation of Material Consumption** - Generate accurate material quantity tables with District wise Material Rates instantly
+3. **🔄 Do the Variation with Portal Data** - Compare and highlight differences between your data and HEWP portal data
+4. **📤 Upload Estimate/Bill to HEWP Portal** - One-click upload to HEWP portal with auto-login
+
+**For complete tutorials on all features and methods, watch our full playlist:**  
+🎥 [**Complete Tutorial Playlist on @HEWPTools**](https://www.youtube.com/watch?v=AUGClE_q9IY&list=PLCbMlKNK4S80cjerEh8_Fy19SYs13wGXq&index=1)
+
+---
+
+## ⭐ Key Features at a Glance
+
+### What You Get:
+- ✅ **90% Time Saved** on estimation and billing tasks
+- ✅ **0% Alignment Errors** with intelligent data arrangement
+- ✅ **30+ Professional Tools** in one comprehensive package
+- ✅ **3-in-1 Solution:** Offline Excel + Online Web + Chrome Tools (Portal Error Fixer)
+- ✅ **HSR 2023** with latest amendments fully integrated
+- ✅ **Available for both Contractor & Employee** logins
+- ✅ **One-click installer** with zero technical skills required
+- ✅ **Free Chrome/Edge Extension** included (No Extra Charges)
+
+---
 
 #### ✅ Core Features (in Excel Ribbon):
 
@@ -60,9 +76,17 @@ Estimation & Billing Tool is a comprehensive automation toolkit designed specifi
 * **👍 Special Log Window For Excel Error to fix** - Your Data will be With 0% Error.
 ---
 
-### 🌐 Excel Enhancements Features in (First Tab: **`E. TOOLS`**)
 
-**📤 One-Click TOOLS** – A comprehensive Excel utility tab for generating bills, estimates, and engineering documents.
+## 🚀 Official Website & Download
+
+**📦 Official Website:** [https://mrgargsir.github.io/HEWP-Excel-Addins/](https://mrgargsir.github.io/HEWP-Excel-Addins/)
+
+**🎥 YouTube Channel:** [https://www.youtube.com/@HEWPTools](https://www.youtube.com/@HEWPTools)
+
+**📞 Support:** WhatsApp: +91 97285 32828 | Email: help@mrgargsir.store
+
+
+### 🌐 Estimate Preparation Features (First Tab: **`E. TOOLS`**)
 
 1. **Jump to any Sheet** – Quickly navigate between All worksheets in a workbook with many sheets. So Useful When you have lots of worksheets. 
 2. **Refresh Sheet** – Instantly refresh the Excel in case Excel becomes unresponsive sometimes.
@@ -83,17 +107,20 @@ Estimation & Billing Tool is a comprehensive automation toolkit designed specifi
 17. **Abstract Bill Summary** - Generate a complete abstract Bill or estimate summary in a new worksheet, next to the active sheet.
 18. **Bill Summary** – Generate a detailed summary in a new worksheet and if a portal-downloaded summary is opened, it will auto fetch, compare and highlight differences. It also works for Variation with DNIT QTY.
 19. **Quantity of Materials Summary** – Generate a complete Material Consumption Summary at the bottom of the Bill/Estimate. A Detailed Material Quantity Table.
+20. **Bill Compare** - Generate a comparison of Portal Bill Data with your Excel Bill and get to know final verdict of comparison.
+21. **Bill Variation** - Generate a Variation of Portal Bill Data and Previously Executed Qty if any, with your Excel Bill or Final Bill and get status of data. also it will be used to upload Variation on HEW Portal via Web Tools.
 
 ---
-### Template Tab
-- Web Templates
-- My Templates
-- Add Template
-- Edit Template
-- Delete Templates
+### 📑 Template Management (Second Tab: **`Template`**)
+
+- **Web Templates** – Access pre-built templates
+- **My Templates** – Manage your custom templates
+- **Add Template** – Create new templates
+- **Edit Template** – Modify existing templates
+- **Delete Templates** – Remove unwanted templates
 
 ---
-### 🌐 Web Automation Features (Second Tab: **`WebAuto`**)
+### 🌐 Web Automation Features (Third Tab: **`WebAuto`**)
 
 **📤 One-Click Uploader** – Interact directly with the HEWP Portal from Excel.
 
@@ -108,6 +135,7 @@ Estimation & Billing Tool is a comprehensive automation toolkit designed specifi
 9. **Website Data Scraper** – Download completed bill data from the HEWP portal in Excel Format from contractor ID, including a summary sheet.
 10. **Delete Bill Data** – Remove all previously filled bill data items in one click on the HEWP portal in Contractor Login.
 11. **Auto Upload Full Bill/Template** – Automatically upload The Whole Bill for all Users at one click in the HEWP Portal.
+12. **Auto Upload Variation** - Automatically upload Full Variation (Add item, add Quantity, Remove item, remove quantity) to HEW Portal.
 ---
 
 #### 🚀 Additional Highlights:
@@ -118,18 +146,18 @@ Estimation & Billing Tool is a comprehensive automation toolkit designed specifi
 ---
 
 
-# 2. **MRGARGSIR Chrome/Edge Extension (Free with Addins - No Extra Charges)**  
+# 2. **MRGARGSIR Chrome/Edge Extension (Free with Tool - No Extra Charges)**  
 
-🚀 **A productivity extension for HEWP (Haryana Engineering Works Portal) automation.**  
+🚀 **A productivity extension for HEWP (Haryana Engineering Works Portal)**  
 📌 **Developer:** **MRGARGSIR**  
 
 ## **🔧 Main Features of ChromeExtension**  
 
-**🔗 Add Important Bookmarks** – Add Advanced Bookmarks which will make easy use of the HEWP Portal.
+**🔗 Added Important Bookmarks** – Added Advanced Bookmarks which will make easy use of the HEWP Portal.
 
 **🔍 Smart Tender Search** – Enhanced dropdown search for tenders.
 
-**☑️ Toggle All Checkbox.**  
+**☑️ Toggle All Checkbox.**  – Select/deselect all items at once
 
 **🎯 Enter Button Fixes** (Pressing the Enter button will not clear the form on the HEWP portal anymore)  
 
@@ -137,67 +165,160 @@ Estimation & Billing Tool is a comprehensive automation toolkit designed specifi
 
 **✅ Dark Mode** (Enable Dark mode on all websites)
 
-MRGARGSIR SUITE - INSTALLATION GUIDE
+---
 
-## 🖥️ System Requirements
+## 💻 System Requirements
 
 ### Minimum Requirements:
-- Windows 7 / 8 / 10 / 11
-- Microsoft Excel 2016 or later
-- Google Chrome browser OR Edge
-- 4GB RAM
-- 500MB free disk space
+- 🖥️ Windows 7 / 8 / 10 / 11
+- 📊 Microsoft Excel 2016 or later
+- 🌐 Google Chrome browser OR Microsoft Edge
+- 💾 4GB RAM
+- 📁 500MB free disk space
 
 ### Recommended:
-- Windows 10 / 11
-- Microsoft Excel 2019 / 365
-- Latest Chrome/Edge browser
-- 8GB RAM
-- 1GB free disk space
-  
-### 📋 BEFORE YOU INSTALL:
-1. Close all Microsoft Excel windows
+- 🖥️ Windows 10 / 11
+- 📊 Microsoft Excel 2019 / 365
+- 🌐 Latest Chrome/Edge browser
+- 💾 8GB RAM
+- 📁 1GB free disk space
 
+---
 
-### 📦 INSTALLATION:
-1. Extract all files to a folder (if zip.)
-2. Double-click "Installer.exe"
-3. If Windows shows a security warning, click "More info" → "Run anyway"
-4. Click Next → Next → Install
-5. Wait for completion (1-2 minutes)
-6. After Installation, Open Excel.
-7. Insert Key and Do activate
-8. After Activation , Restart Excel.
+## 📦 Installation Guide
 
-🔑 YOUR INSTALL KEY:
-[PROVIDED UNIQUE KEY TO EACH USER]
+### 🔴 BEFORE YOU INSTALL:
+1. ❌ Close all Microsoft Excel windows
+
+### ✅ INSTALLATION STEPS:
+1. 📂 Extract all files to a folder (if downloaded as zip)
+2. 🖱️ Double-click `Installer.exe`
+3. ⚠️ If Windows shows security warning, click **"More info"** → **"Run anyway"**
+4. ➡️ Click **Next** → **Next** → **Install**
+5. ⏳ Wait for completion (1-2 minutes)
+6. 📊 Open Microsoft Excel after installation
+7. 🔑 Insert your unique activation key
+8. ✅ Activate the software
+9. 🔄 Restart Excel to complete setup
+
+### 🔑 YOUR INSTALL KEY:
+**[Unique key provided to each licensed user]**
+
+---
 
 ## 🎥 Video Tutorials
 
-Complete video tutorials available on our YouTube channel:
+Complete step-by-step video tutorials available on our YouTube channel:
 
-1. **Complete Installation Walkthrough** – Step-by-step installation guide (5 min)
-2. **E. Tools Tab Features Part 1** – Auto Multiply, Sum, HSR Rate, Amount
-3. **E. Tools Tab Features Part 2** – Insert Row, Copy Sheet, Round Off, Metric Unit
-4. **E. Tools Tab Features Part 3** – Steel Function, Custom Function, Steel Summary
-5. **Web Tools Tab Features** – Portal integration and automation
+### 📺 Tutorial Series:
 
-## ⚠️ TROUBLESHOOTING:
-- "Invalid install key" → Check you entered the key correctly
-- Excel add-in not loading → Restart Excel after installation
-- Chrome extension not working → Restart Chrome
-- Expired Installer → Contact MRGARGSIR for updated version
+1. **[Complete Installation Walkthrough @HEWPTools](https://www.youtube.com/@HEWPTools)** – Full installation guide (5 min)
+2. **E. Tools Tab Features Part 1** – Auto Multiply, Sum, HSR Rate, Amount Calculator
+3. **E. Tools Tab Features Part 2** – Insert Row, Copy Sheet, Round Off, Metric Units
+4. **E. Tools Tab Features Part 3** – Steel Functions, Custom Functions, Steel Summary
+5. **Web Tools Tab Features** – Portal integration and complete automation guide
+
+🎬 **[Watch Full Playlist Here @HEWPTools](https://www.youtube.com/watch?v=AUGClE_q9IY&list=PLCbMlKNK4S80cjerEh8_Fy19SYs13wGXq&index=1)**
+
+---
 
 ## 📞 Contact & Support
 
-**Email:** help@mrgargsir.store  
-**WhatsApp:** +91 97285 32828  
-**Website:** https://mrgargsir.github.io/HEWP-Excel-Addins/
+### 🆘 Get Help:
 
-## © License & Copyright
+- 📧 **Email:** help@mrgargsir.store
+- 📱 **WhatsApp:** +91 97285 32828
+- 🌐 **Website:** [https://mrgargsir.github.io/HEWP-Excel-Addins/](https://mrgargsir.github.io/HEWP-Excel-Addins/)
+[https://mrgargsir.store](https://mrgargsir.store)
 
-© MRGARGSIR 2026 – All rights reserved
+### 🌍 Social Media & Community:
 
-**Thank you for using MRGARGSIR Tools!** 🚀
+- 📘 **Facebook:** [https://facebook.com/HEWPTools](https://facebook.com/HEWPTools)
+- 📸 **Instagram:** [https://instagram.com/HEWPTools](https://instagram.com/HEWPTools)
+- 🐦 **X (Twitter):** [https://x.com/HEWPTools](https://x.com/HEWPTools)
+- 💬 **WhatsApp Group:** [Join Community](https://chat.whatsapp.com/DEXKInfvpBd9cLwyaoq0sd)
+- 📢 **WhatsApp Channel:** [Follow Updates](https://whatsapp.com/channel/0029VbBYrvx47XeIXLM2PU3u)
 
-HEWP Excel Addins, HEWP tools, Excel addins, HEWP tutorials, HEWP WhatsApp, HEWP YouTube, Estimate, Estimation, billing, bill, boq, tools, mrgargsir, tool by mrgargsir, tools by mrgargsir, estimates, excel addins, Add-ins, construction estimation software, building cost estimator, quantity surveyor tools, construction billing software, BOQ preparation tool, material estimation, construction project management, Excel automation tools, estimating software India, construction calculator Excel, rate analysis tool, construction costing software, building estimation tool, contractor billing software, civil engineering Excel tools, construction takeoff software, budget estimation tool, construction management Excel, project costing software, residential estimation, commercial estimation, construction quote generator, measurement sheet tool, cost analysis Excel addin, construction database tools, HSR database, QTY tracking, Excel VSTO addins, third party Excel tools, construction industry software, estimator tools, building quantity surveyor, construction documentation tools, Excel plugins for construction, automated estimation software, construction reporting tools.
+---
+
+## ❓ Troubleshooting
+
+### Common Issues & Solutions:
+
+| Issue | Solution |
+|-------|----------|
+| ❌ "Invalid install key" | Check you entered the key correctly (no spaces) |
+| ❌ Excel add-in not loading | Restart Excel after installation |
+| ❌ Chrome extension not working | Restart Chrome browser |
+| ❌ Expired Installer | Contact MRGARGSIR for updated version |
+| ❌ Installation blocked | Click "More info" → "Run anyway" on Windows security warning |
+
+**Still having issues?** Contact us via WhatsApp: +91 97285 32828
+
+---
+
+## 🏆 Why Choose HEWP Tools?
+
+### ✨ Benefits for Engineers:
+- ⚡ Prepare estimates 90% faster
+- ✅ Zero alignment errors in templates
+- 📊 Professional HSR-compliant documents
+- 🔄 Easy variation management
+- 📤 Direct portal upload capability
+
+### ✨ Benefits for Contractors:
+- 💰 Accurate material quantity calculations
+- 📋 Professional BOQ preparation
+- 🚀 Quick tender document creation
+- 🔍 Real-time HSR rate verification
+- ⚙️ Complete automation workflow
+
+---
+
+## 📚 Key Terminology
+
+- **HEWP** – Haryana Engineering Works Portal
+- **BOQ** – Bill of Quantities
+- **HSR** – Haryana Schedule of Rates (2023 with amendments)
+- **MB** – Measurement Book
+- **SR** – Schedule Rate
+
+---
+
+## 🔖 SEO Keywords
+
+HEWP Excel Addins, HEWP tools, Excel addins, HEWP tutorials, HEWP WhatsApp, HEWP YouTube, Estimate, Estimation, billing, bill, boq, tools, boq tool, boq tools, boq mrgargsir, mrgargsir, tool by mrgargsir, tools by mrgargsir, estimates, excel addins, Add-ins, construction estimation software, building cost estimator, quantity surveyor tools, construction billing software, BOQ preparation tool, material estimation, construction project management, Excel automation tools, estimating software India, construction calculator Excel, rate analysis tool, construction costing software, building estimation tool, contractor billing software, civil engineering Excel tools, construction takeoff software, budget estimation tool, construction management Excel, project costing software, residential estimation, commercial estimation, construction quote generator, measurement sheet tool, cost analysis Excel addin, construction database tools, HSR database, QTY tracking, Excel VSTO addins, third party Excel tools, construction industry software, estimator tools, building quantity surveyor, construction documentation tools, Excel plugins for construction, automated estimation software, mrgargsir tools, hewp tool, hewp tools, hewptools, hewptool, mrgargsir store, billing tools, construction reporting tools.
+
+Haryana Engineering Works Portal 
+HEWP ESTIMATE, BOQ, MEASUREMENT BOOK TEMPLATE, HSR 2023 WITH LATEST AMENDMENTS, REAL TIME SEARCH ITEM NO., AUTO UNIT CONVERTER, RATE, RATE TYPE, UNIT FETCHER, AUTO DATA COPY PASTE TO TEMPLATE, AUTO INTELLIGENT DATA ARRANGED IN TEMPLATES WITH 0% ERROR CHANCE, TEMPLATE EXCEL UPLOADER TO PORTAL, CHROME BOOKMARKS LINK FOR SHORTCUTS ON WEBSITE - SAVE LOTS OF TIME, SEARCH BAR FOR HSR ITEM NUMBER AND SEARCH BAR FOR TENDER And All DropDown ON HEWP PORTAL via Chrome Extension, ONE CLICK INSTALLER. Available for Both CONTRACTOR AND EMPLOYEE LOGINS.
+
+---
+
+## 📄 License & Copyright
+
+© **MRGARGSIR 2026** – All rights reserved
+
+This software is proprietary and licensed for use only by authorized customers with valid license keys.
+
+---
+
+## 🙏 Thank You
+
+**Thank you for choosing MRGARGSIR HEWP Tools!** 🚀
+
+We're committed to making your engineering work faster, easier, and error-free.
+
+For the latest updates, tutorials, and support:
+- 🌐 Visit: [mrgargsir.github.io/HEWP-Excel-Addins](https://mrgargsir.github.io/HEWP-Excel-Addins/)
+- 📺 Subscribe: [YouTube Channel @HEWPTools](https://www.youtube.com/@HEWPTools)
+- 💬 Join: [WhatsApp Community](https://chat.whatsapp.com/DEXKInfvpBd9cLwyaoq0sd)
+
+---
+
+<div align="center">
+
+**Made with ❤️ for Engineers and Contractors**
+
+[![Download Now](https://img.shields.io/badge/Download-Now-success?style=for-the-badge)](https://mrgargsir.github.io/HEWP-Excel-Addins/)
+
+</div>
