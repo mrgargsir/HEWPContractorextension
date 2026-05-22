@@ -1,4 +1,5 @@
 // Function to enable Dark Reader
+let fixEnterEnabledCache = false;
 
 function enableDarkReader() {
   if (window.DarkReader) {
@@ -96,7 +97,7 @@ new MutationObserver(() => {
       }
     });
   }
-}).observe(document, {subtree: true, childList: true});
+}).observe(document, { subtree: true, childList: true });
 
 // Listen for theme changes in storage (for instant update across all tabs)
 chrome.storage.onChanged.addListener((changes, area) => {
@@ -124,19 +125,25 @@ if (chrome.runtime?.id) {
   });
 }
 
+
 function attachFixEnterHandler(enabled) {
-  document.querySelectorAll('#txthsrno').forEach(hsrInput => {
-    hsrInput.removeEventListener('keypress', window.__fixEnterHandler, true);
-    if (enabled) {
-      window.__fixEnterHandler = function(event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          const btn = document.getElementById("Button5");
-          if (btn) btn.click();
-        }
-      };
-      hsrInput.addEventListener('keypress', window.__fixEnterHandler, true);
-    }
+  const isCorrectSite = window.location.hostname.includes("works.haryana.gov.in");
+
+  if (!enabled || !isCorrectSite) return;
+
+  document.querySelectorAll('#txthsrno').forEach(input => {
+    if (input.__enterFixAttached) return;
+
+    const handler = function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        const btn = document.getElementById("Button5");
+        if (btn) btn.click();
+      }
+    };
+
+    input.addEventListener('keypress', handler, true);
+    input.__enterFixAttached = true;
   });
 }
 
@@ -157,16 +164,19 @@ if (chrome.runtime?.id) {
 
 chrome.storage.onChanged.addListener((changes, area) => {
   if (!chrome.runtime?.id) return; // Exit if context invalidated
-  
+
   if (area === 'local' && changes.fixEnterEnabled) {
-    attachFixEnterHandler(changes.fixEnterEnabled.newValue);
+    fixEnterEnabledCache = changes.fixEnterEnabled.newValue;
+    attachFixEnterHandler(fixEnterEnabledCache);
   }
 });
 
 
 const observer = new MutationObserver(() => {
-  chrome.storage.local.get(['fixEnterEnabled'], (result) => {
-    attachFixEnterHandler(!!result.fixEnterEnabled);
-  });
+  attachFixEnterHandler(fixEnterEnabledCache);
 });
-observer.observe(document.body, { childList: true, subtree: true });
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});

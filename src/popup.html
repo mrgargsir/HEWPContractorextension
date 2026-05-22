@@ -109,7 +109,7 @@
     }
 
     /* Individual Button Colors */
-    #reloadBtn {
+    #waToggleBtn {
       background: linear-gradient(135deg, #0084ff 0%, #0056b3 100%);
     }
 
@@ -154,6 +154,21 @@
       font-weight: 500;
       opacity: 0.9;
     }
+
+    #waSection {
+  background: rgba(255,255,255,0.1);
+  padding: 10px;
+  border-radius: 10px;
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+#waSection.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 
     /* QR Section */
     #qrSection {
@@ -470,11 +485,32 @@
   </div>
 
   <div class="container">
+   
     <div class="button-container">
-      <button id="reloadBtn" aria-label="Reload extension">
-        <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>
-        Reload Extension
+      <button id="waToggleBtn" aria-label="📲 WhatsApp Sender">
+        <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+        📲 WhatsApp Sender
       </button>
+
+<div id="waSection" style="display:none; margin-top:10px;">
+
+  <textarea id="waNumbers" placeholder="Paste numbers..." style="width:100%; height:70px;"></textarea>
+
+  <textarea id="waMessage" placeholder="Enter message..." style="width:100%; height:70px; margin-top:5px;"></textarea>
+
+  <label style="font-size:12px;">Delay (sec):</label>
+  <input type="range" id="waDelay" min="10" max="100" value="10">
+  <span id="waDelayValue">10</span>
+
+  <button id="sendWA" style="margin-top:8px; background:#25D366;">
+    Send
+  </button>
+
+  <button id="stopWA" style="margin-top:5px; background:#ff4444;">
+    Stop
+  </button>
+
+</div>
 
       <button id="openNewTabBtn" aria-label="Download Online Installer">
         <svg viewBox="0 0 24 24"><path d="M10.59 13.41L9.17 14.83a4 4 0 0 1 5.66 0l1.41-1.41a6 6 0 0 0-8.48 0l-3 3a6 6 0 0 0 8.48 8.48l1.41-1.41a4 4 0 0 1-5.66 0l-1.42-1.42"/></svg>

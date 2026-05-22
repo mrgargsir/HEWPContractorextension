@@ -3,6 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const manifest = chrome.runtime.getManifest();
   const installedVersion = manifest.version;
   
+  chrome.storage.local.get(['waNumbers', 'waMessage', 'waDelay'], (data) => {
+  if (data.waNumbers) document.getElementById('waNumbers').value = data.waNumbers;
+  if (data.waMessage) document.getElementById('waMessage').value = data.waMessage;
+  if (data.waDelay) {
+    document.getElementById('waDelay').value = data.waDelay;
+    document.getElementById('waDelayValue').textContent = data.waDelay;
+  }
+});
+
   // Update installed version in footer
   const installedVersionElement = document.querySelector('.installed-version a');
   if (installedVersionElement) {
@@ -62,14 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
 
-
-
   // All DOM element event listeners go here:
-  document.getElementById('reloadBtn').addEventListener('click', () => {
-    chrome.runtime.reload();
-    setStatus('Extension reloaded');
-  });
-
   document.getElementById('hsrBtn').addEventListener('click', () => {
     chrome.tabs.create({ url: 'https://mrgargsir.github.io/HEWP-Excel-Addins/' });
     setStatus('CHANNEL OPENED');
@@ -322,4 +324,82 @@ chrome.storage.local.get(['bookmarksEnabled', 'bookmarkPosition'], (result) => {
 
   positionLeft.addEventListener('change', handlePositionChange);
   positionRight.addEventListener('change', handlePositionChange);
+});
+
+// WhatsApp Sender Logic
+const delaySlider = document.getElementById('waDelay');
+const delayValue = document.getElementById('waDelayValue');
+
+if (delaySlider) {
+  delaySlider.addEventListener('input', () => {
+    delayValue.textContent = delaySlider.value;
+  });
+}
+
+document.getElementById('sendWA')?.addEventListener('click', async () => {
+  const numbersRaw = document.getElementById('waNumbers').value;
+  const message = document.getElementById('waMessage').value;
+  const delay = parseInt(delaySlider.value);
+
+  if (!numbersRaw || !message) {
+    alert('Enter numbers and message');
+    return;
+  }
+
+  const numbers = numbersRaw
+    .split(/\n|,|\t/)
+    .map(n => n.trim())
+    .filter(n => n.length > 8);
+
+  // reset stop flag
+  await chrome.storage.local.set({ waStop: false });
+
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+  chrome.tabs.sendMessage(tab.id, {
+  action: "INIT_WA",
+  numbers,
+  message,
+  delay
+});
+});
+
+document.getElementById('stopWA')?.addEventListener('click', async () => {
+  await chrome.storage.local.set({ waStop: true });
+});
+
+// Listen for updates from content script
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "WA_PROGRESS") {
+    document.getElementById('waTotal').textContent = msg.total;
+    document.getElementById('waSent').textContent = msg.sent;
+    document.getElementById('waFailed').textContent = msg.failed;
+    document.getElementById('waStatus').textContent = msg.status;
+  }
+});
+
+const waBtn = document.getElementById('waToggleBtn');
+const waSection = document.getElementById('waSection');
+
+waBtn.addEventListener('click', () => {
+  if (waSection.classList.contains('visible')) {
+    waSection.classList.remove('visible');
+    setTimeout(() => (waSection.style.display = 'none'), 300);
+  } else {
+    waSection.style.display = 'block';
+    setTimeout(() => waSection.classList.add('visible'), 10);
+  }
+});
+
+['waNumbers', 'waMessage', 'waDelay'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  el.addEventListener('input', () => {
+    chrome.storage.local.set({
+      waNumbers: document.getElementById('waNumbers').value,
+      waMessage: document.getElementById('waMessage').value,
+      waDelay: document.getElementById('waDelay').value
+    });
+  });
 });
