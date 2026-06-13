@@ -53,21 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Button to trigger download
   const downloadBtn = document.getElementById('openNewTabBtn');
-  if (downloadBtn) {
-    downloadBtn.addEventListener('click', () => {
-      if (latestZipUrl) {
-        const a = document.createElement('a');
-        a.href = latestZipUrl;
-        a.download = '';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setStatus('Downloading Online Installer...');
-      } else {
-        setStatus('Download link not ready. Try again shortly.');
-      }
-    });
-  }
+if (downloadBtn) {
+  downloadBtn.addEventListener('click', () => {
+    chrome.tabs.create({ url: 'https://mrgargsir.github.io/HEWP-Excel-Addins/#download' });
+  });
+}
 
   
 
